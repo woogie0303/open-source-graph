@@ -1,0 +1,7 @@
+{
+  "{src,apps,libs,test}/**/*.ts": [
+    "pnpm run lint",
+    "bash -c 'pnpm run check-types'"
+  ],
+  "**/*": "prettier --write . --ignore-unknown"
+}
