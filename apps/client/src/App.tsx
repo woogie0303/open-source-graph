@@ -1,3 +1,4 @@
+import { Navbar } from "./components/Navbar";
 import { NetworkGraph } from "./components/NetworkGraph";
 import "./index.css";
 const sampleData = {
@@ -44,7 +45,12 @@ const sampleData = {
 };
 
 function App() {
-  return <NetworkGraph data={sampleData.functions} />;
+  return (
+    <div className="flex ">
+      <Navbar />
+      <NetworkGraph data={sampleData.functions} />
+    </div>
+  );
 }
 
 export default App;
