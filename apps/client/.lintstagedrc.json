@@ -1,4 +1,3 @@
 {
-  "*.{ts,js,jsx,tsx}": ["pnpm run lint", "bash -c 'pnpm run check-types'"],
-  "**/*": "prettier --write . --ignore-unknown"
+  "*.{ts,js,jsx,tsx}": ["pnpm run lint", "bash -c 'pnpm run check-types'"]
 }
