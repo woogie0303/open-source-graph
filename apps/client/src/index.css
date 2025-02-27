@@ -21,7 +21,6 @@ body {
 }
 
 button {
-  color: inherit;
   cursor: pointer;
   outline: inherit;
 }

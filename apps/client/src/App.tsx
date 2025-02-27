@@ -1,6 +1,6 @@
-import { CodeViewer } from "./components/CodeViewer";
 import { Navbar } from "./components/Navbar";
 import { NetworkGraph } from "./components/NetworkGraph";
+import { NodeInform } from "./components/NodeInform";
 
 import "./index.css";
 const sampleData = {
@@ -51,7 +51,7 @@ function App() {
     <div className="flex h-full">
       <Navbar />
       <NetworkGraph data={sampleData.functions} />
-      <CodeViewer />
+      <NodeInform />
     </div>
   );
 }
