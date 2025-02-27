@@ -36,7 +36,8 @@ const NetworkGraph = ({ data }: { data: FunctionNode[] }) => {
       .append("rect")
       .attr("width", "100%")
       .attr("height", "100%")
-      .attr("fill", "#f0f0f0");
+      .attr("fill", "#ffffff");
+
     const g = svg.append("g");
 
     // 노드 데이터 준비 (타입 캐스팅)
@@ -60,14 +61,14 @@ const NetworkGraph = ({ data }: { data: FunctionNode[] }) => {
       .append("marker")
       .attr("id", "arrowhead")
       .attr("viewBox", "-0 -5 10 10")
-      .attr("refX", 25) // 화살표 위치 조정
+      .attr("refX", 28) // 간격 줄임
       .attr("refY", 0)
       .attr("orient", "auto")
-      .attr("markerWidth", 6)
-      .attr("markerHeight", 6)
+      .attr("markerWidth", 16) // 크기 증가
+      .attr("markerHeight", 16) // 크기 증가
       .append("svg:path")
-      .attr("d", "M 0,-5 L 10 ,0 L 0,5")
-      .attr("fill", "#ff7f0e");
+      .attr("d", "M -2,-4 L 4,0 L -2,4") // 더 넓은 화살표 모양
+      .attr("fill", "#94A3B8");
 
     // 시뮬레이션 생성
     const simulation = d3
@@ -88,9 +89,9 @@ const NetworkGraph = ({ data }: { data: FunctionNode[] }) => {
       .selectAll("line")
       .data(links)
       .join("line")
-      .attr("stroke", "#ff7f0e")
-      .attr("stroke-width", 2)
-      .attr("stroke-opacity", 0.6)
+      .attr("stroke", "#E2E8F0")
+      .attr("stroke-width", 1.5)
+      .attr("stroke-opacity", 1)
       .attr("marker-end", "url(#arrowhead)");
 
     // 노드 그룹 생성
@@ -120,22 +121,26 @@ const NetworkGraph = ({ data }: { data: FunctionNode[] }) => {
     // 드래그 동작 적용 (타입 문제 해결)
     nodeGroup.call(dragBehavior as any);
 
-    // 노드 원 그리기
+    // 노드 디자인 개선
     nodeGroup
       .append("circle")
-      .attr("r", 25)
-      .attr("fill", "#4682b4") // 스틸블루 색상
-      .attr("stroke", "#333")
+      .attr("r", 28)
+      .attr("fill", "#F8FAFC")
+      .attr("stroke", "#E2E8F0")
       .attr("stroke-width", 1.5);
 
-    // 함수명 텍스트 그리기
+    // 텍스트 가독성 개선
     nodeGroup
       .append("text")
       .text((d) => d.name)
-      .attr("font-size", 10)
-      .attr("fill", "white") // 흰색 텍스트
+      .attr("font-size", 12)
+      .attr("fill", "#64748B")
       .attr("text-anchor", "middle")
-      .attr("dy", 4);
+      .attr("dy", 4)
+      .attr(
+        "font-family",
+        "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont",
+      );
 
     // 시뮬레이션 틱 이벤트 설정
     simulation.on("tick", () => {
