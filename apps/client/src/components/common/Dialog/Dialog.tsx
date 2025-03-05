@@ -1,8 +1,8 @@
+import useControllableState from "@/hooks/useControllableState/useControllableState";
 import { PropsWithChildren, useId } from "react";
 import { DialogContext } from "./context";
 import DialogContent from "./DialogContent";
 import DialogTrigger from "./DialogTrigger";
-import useControllableState from "./hooks/useControllableState";
 
 interface DialogProps {
   open?: boolean;
