@@ -56,11 +56,10 @@ export default function CodeViewer() {
     <>
       <div
         ref={divRef}
-        className=" overflow-auto rounded-lg border border-slate-200 h-[calc(100vh-100px)]"
+        className=" overflow-auto rounded-lg border border-slate-200"
       >
         <CodeMirror
           value={code}
-          width="800px"
           extensions={[javascript({ jsx: true })]} // JavaScript + JSX 지원으로 변경
           theme={customTheme}
           readOnly
@@ -72,7 +71,7 @@ export default function CodeViewer() {
           }}
         />
       </div>
-      <button
+      {/* <button
         onClick={() => {
           if (divRef.current) {
             const totalHeight = divRef.current.scrollHeight;
@@ -85,7 +84,7 @@ export default function CodeViewer() {
         }}
       >
         scroll to
-      </button>
+      </button> */}
     </>
   );
 }

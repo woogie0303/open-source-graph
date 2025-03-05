@@ -16,7 +16,13 @@ interface LinkDatum extends d3.SimulationLinkDatum<FunctionNode> {
   type: string;
 }
 
-const NetworkGraph = ({ data }: { data: FunctionNode[] }) => {
+const NetworkGraph = ({
+  data,
+  onNodeClick,
+}: {
+  data: FunctionNode[];
+  onNodeClick: () => void;
+}) => {
   const svgRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
@@ -95,10 +101,14 @@ const NetworkGraph = ({ data }: { data: FunctionNode[] }) => {
       .attr("marker-end", "url(#arrowhead)");
 
     // 노드 그룹 생성
-    const nodeGroup = g.append("g").selectAll("g").data(nodes).join("g");
-    // .on("click", (event, d) => {
-    //   onSelectFunction(d);
-    // });
+    const nodeGroup = g
+      .append("g")
+      .selectAll("g")
+      .data(nodes)
+      .join("g")
+      .on("click", () => {
+        onNodeClick();
+      });
 
     // 드래그 동작 정의
     const dragBehavior = d3
@@ -168,7 +178,7 @@ const NetworkGraph = ({ data }: { data: FunctionNode[] }) => {
     return () => {
       simulation.stop();
     };
-  }, [data]);
+  }, [data, onNodeClick]);
 
   return <svg ref={svgRef} className="w-full h-screen"></svg>;
 };

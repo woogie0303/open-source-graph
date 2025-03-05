@@ -1,4 +1,4 @@
-import { Code, Notebook } from "lucide-react";
+import { Code, Notebook, X } from "lucide-react";
 import CodeViewer from "../CodeViewer/CodeViewer";
 import { Tabs } from "../common/Tabs";
 import TabsContent from "../common/Tabs/TabsContent";
@@ -6,7 +6,13 @@ import TabsTrigger from "../common/Tabs/TabsTrigger";
 
 export default function NodeInform() {
   return (
-    <div className="p-4 overflow-y-scroll h-inherit w-[1000px] h-screen border-l border-slate-200 shadow-lg transform transition-transform duration-300 ease-in-out z-10 ">
+    <div className="px-4 py-8 overflow-y-scroll basis-5/6 h-inherit h-screen border-l border-slate-200 shadow-lg transform transition-transform duration-300 ease-in-out z-10">
+      <div className="text-xl font-medium text-slate-900 mb-8 flex justify-between">
+        RenderPhase{" "}
+        <button onClick={() => {}}>
+          <X />
+        </button>
+      </div>
       <Tabs defaultValue="code">
         {/* TODO: TabList 추가 */}
         <div className="items-center  justify-center rounded-md bg-gray-100 p-1 text-gray-400 grid w-full grid-cols-2 mb-4">

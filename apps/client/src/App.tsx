@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Navbar } from "./components/Navbar";
 import { NetworkGraph } from "./components/NetworkGraph";
 import { NodeInform } from "./components/NodeInform";
@@ -47,11 +48,17 @@ const sampleData = {
 };
 
 function App() {
+  const [activeNode, setActiveNode] = useState(false);
   return (
     <div className="flex h-full">
       <Navbar />
-      <NetworkGraph data={sampleData.functions} />
-      <NodeInform />
+      <NetworkGraph
+        data={sampleData.functions}
+        onNodeClick={() => {
+          setActiveNode((pre) => !pre);
+        }}
+      />
+      {activeNode && <NodeInform />}
     </div>
   );
 }
