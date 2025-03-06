@@ -12,6 +12,9 @@
   },
   "dependencies": {
     "@codemirror/lang-javascript": "^6.2.3",
+    "@editorjs/editorjs": "^2.30.8",
+    "@editorjs/header": "^2.8.8",
+    "@editorjs/list": "^2.0.6",
     "@lezer/highlight": "^1.2.1",
     "@tailwindcss/vite": "^4.0.7",
     "@uiw/codemirror-themes": "^4.23.8",

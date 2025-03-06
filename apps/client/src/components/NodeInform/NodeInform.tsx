@@ -3,6 +3,7 @@ import CodeViewer from "../CodeViewer/CodeViewer";
 import { Tabs } from "../common/Tabs";
 import TabsContent from "../common/Tabs/TabsContent";
 import TabsTrigger from "../common/Tabs/TabsTrigger";
+import { TextEditorBox } from "../TextEditorBox";
 
 export default function NodeInform() {
   return (
@@ -33,7 +34,7 @@ export default function NodeInform() {
           <CodeViewer />
         </TabsContent>
         <TabsContent value="memo">
-          <div className="">memo</div>
+          <TextEditorBox />
         </TabsContent>
       </Tabs>
     </div>
