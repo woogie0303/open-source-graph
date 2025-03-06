@@ -55,7 +55,7 @@ function App() {
       <NetworkGraph
         data={sampleData.functions}
         onNodeClick={() => {
-          setActiveNode((pre) => !pre);
+          setActiveNode(true);
         }}
       />
       {activeNode && <NodeInform />}

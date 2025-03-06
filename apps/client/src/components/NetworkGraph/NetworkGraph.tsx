@@ -2,9 +2,9 @@
 "use client";
 
 import * as d3 from "d3";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
-// 타입 정의 추가
+// 타입 정의
 interface FunctionNode extends d3.SimulationNodeDatum {
   id: string;
   name: string;
@@ -24,20 +24,34 @@ const NetworkGraph = ({
   onNodeClick: () => void;
 }) => {
   const svgRef = useRef<SVGSVGElement>(null);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const zoomRef = useRef<d3.ZoomBehavior<SVGSVGElement, unknown> | null>(null);
+
+  useEffect(() => {
+    if (!svgRef.current) return;
+
+    const observer = new ResizeObserver(() => {
+      if (svgRef.current) {
+        const { width, height } = svgRef.current.getBoundingClientRect();
+        setDimensions({ width, height });
+      }
+    });
+
+    observer.observe(svgRef.current.parentElement!);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!data || !svgRef.current) return;
 
-    // SVG 요소 초기화
+    const { width, height } = dimensions;
+    if (width === 0 || height === 0) return;
+
+    // ✅ SVG 초기화
     const svg = d3.select(svgRef.current);
-    svg.selectAll("*").remove(); // 기존 요소 제거
-
-    const width = svgRef.current.getBoundingClientRect().width;
-    const height = svgRef.current.getBoundingClientRect().height;
-
+    svg.selectAll("*").remove();
     svg.attr("width", width).attr("height", height);
 
-    // 배경색 설정
     svg
       .append("rect")
       .attr("width", "100%")
@@ -46,10 +60,7 @@ const NetworkGraph = ({
 
     const g = svg.append("g");
 
-    // 노드 데이터 준비 (타입 캐스팅)
     const nodes: FunctionNode[] = data;
-
-    // 링크 데이터 준비
     const links: LinkDatum[] = [];
     nodes.forEach((node) => {
       node.connections.forEach((targetId) => {
@@ -61,22 +72,20 @@ const NetworkGraph = ({
       });
     });
 
-    // 화살표 마커 정의
     svg
       .append("defs")
       .append("marker")
       .attr("id", "arrowhead")
       .attr("viewBox", "-0 -5 10 10")
-      .attr("refX", 28) // 간격 줄임
+      .attr("refX", 28)
       .attr("refY", 0)
       .attr("orient", "auto")
-      .attr("markerWidth", 16) // 크기 증가
-      .attr("markerHeight", 16) // 크기 증가
+      .attr("markerWidth", 16)
+      .attr("markerHeight", 16)
       .append("svg:path")
-      .attr("d", "M -2,-4 L 4,0 L -2,4") // 더 넓은 화살표 모양
+      .attr("d", "M -2,-4 L 4,0 L -2,4")
       .attr("fill", "#94A3B8");
 
-    // 시뮬레이션 생성
     const simulation = d3
       .forceSimulation<FunctionNode>(nodes)
       .force(
@@ -89,7 +98,6 @@ const NetworkGraph = ({
       .force("charge", d3.forceManyBody().strength(-300))
       .force("center", d3.forceCenter(width / 2, height / 2));
 
-    // 링크 그리기
     const link = g
       .append("g")
       .selectAll("line")
@@ -100,85 +108,94 @@ const NetworkGraph = ({
       .attr("stroke-opacity", 1)
       .attr("marker-end", "url(#arrowhead)");
 
-    // 노드 그룹 생성
+    // ✅ 노드 그룹 추가
     const nodeGroup = g
       .append("g")
       .selectAll("g")
       .data(nodes)
       .join("g")
-      .on("click", () => {
+      .on("click", (event, d) => {
         onNodeClick();
+        event.stopPropagation();
+        clicked(d);
       });
 
-    // 드래그 동작 정의
-    const dragBehavior = d3
-      .drag<SVGGElement, FunctionNode>()
-      .on("start", (event, d) => {
-        if (!event.active) simulation.alphaTarget(0.3).restart();
-        d.fx = d.x;
-        d.fy = d.y;
-      })
-      .on("drag", (event, d) => {
-        d.fx = event.x;
-        d.fy = event.y;
-      })
-      .on("end", (event, d) => {
-        if (!event.active) simulation.alphaTarget(0);
-        d.fx = null;
-        d.fy = null;
-      });
+    nodeGroup.call(
+      d3
+        .drag<SVGGElement, FunctionNode>()
+        .on("start", (event, d) => {
+          if (!event.active) simulation.alphaTarget(0.3).restart();
+          d.fx = d.x;
+          d.fy = d.y;
+        })
+        .on("drag", (event, d) => {
+          d.fx = event.x;
+          d.fy = event.y;
+        })
+        .on("end", (event, d) => {
+          if (!event.active) simulation.alphaTarget(0);
+          d.fx = null;
+          d.fy = null;
+        }) as any,
+    );
 
-    // 드래그 동작 적용 (타입 문제 해결)
-    nodeGroup.call(dragBehavior as any);
-
-    // 노드 디자인 개선
+    // ✅ 노드 디자인
     nodeGroup
       .append("circle")
       .attr("r", 28)
       .attr("fill", "#F8FAFC")
       .attr("stroke", "#E2E8F0")
       .attr("stroke-width", 1.5);
-
-    // 텍스트 가독성 개선
     nodeGroup
       .append("text")
       .text((d) => d.name)
       .attr("font-size", 12)
       .attr("fill", "#64748B")
       .attr("text-anchor", "middle")
-      .attr("dy", 4)
-      .attr(
-        "font-family",
-        "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont",
-      );
+      .attr("dy", 4);
 
-    // 시뮬레이션 틱 이벤트 설정
+    // ✅ 시뮬레이션 업데이트
     simulation.on("tick", () => {
       link
         .attr("x1", (d) => (d.source as FunctionNode).x!)
         .attr("y1", (d) => (d.source as FunctionNode).y!)
         .attr("x2", (d) => (d.target as FunctionNode).x!)
         .attr("y2", (d) => (d.target as FunctionNode).y!);
-
       nodeGroup.attr("transform", (d) => `translate(${d.x}, ${d.y})`);
     });
 
-    // 줌 기능 추가
+    // ✅ 줌 설정
     const zoom = d3
       .zoom<SVGSVGElement, unknown>()
-      .scaleExtent([0.1, 4]) // 줌 범위 설정 (0.1x ~ 4x)
+      .scaleExtent([0.5, 4])
       .on("zoom", (event) => {
         g.attr("transform", event.transform);
       });
 
-    // 줌 동작 적용
-    svg.call(zoom as any).on("dblclick.zoom", null); // 더블 클릭 줌 비활성화
+    zoomRef.current = zoom;
+    svg.call(zoom as any).on("dblclick.zoom", null);
 
-    // 컴포넌트 언마운트 시 시뮬레이션 중지
+    function clicked(d: FunctionNode) {
+      if (!d.x || !d.y) return;
+      const scale = 2;
+      const newX = width / 2 - scale * d.x;
+      const newY = height / 2 - scale * d.y;
+
+      setTimeout(() => {
+        svg
+          .transition()
+          .duration(750)
+          .call(
+            zoomRef.current!.transform as any,
+            d3.zoomIdentity.translate(newX, newY).scale(scale),
+          );
+      }, 100); // ✅ 100ms 딜레이 추가
+    }
+
     return () => {
       simulation.stop();
     };
-  }, [data, onNodeClick]);
+  }, [dimensions, data, onNodeClick]);
 
   return <svg ref={svgRef} className="w-full h-screen"></svg>;
 };
