@@ -175,6 +175,7 @@ const NetworkGraph = ({
     zoomRef.current = zoom;
     svg.call(zoom as any).on("dblclick.zoom", null);
 
+    // TODO: useEffect로 리팩토링
     function clicked(d: FunctionNode) {
       if (!d.x || !d.y) return;
       const scale = 2;

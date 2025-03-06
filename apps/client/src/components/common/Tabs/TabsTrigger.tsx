@@ -17,7 +17,6 @@ export default function TabsTrigger({
   const triggerId = makeTriggerId(context.baseId, value);
   const contentId = makeContentId(context.baseId, value);
   const isSelected = context.value === value;
-  console.log(isSelected);
 
   return (
     <button
