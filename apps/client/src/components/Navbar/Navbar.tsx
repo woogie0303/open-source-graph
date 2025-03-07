@@ -2,10 +2,12 @@ import { FileTree } from "../FileTree";
 
 export default function Navbar() {
   return (
-    <div className="border-r bg-background border-slate-200 w-2/5 h-screen flex flex-col">
+    <div className="border-r bg-background border-slate-200 w-[300px] h-screen flex flex-col">
       <div className="px-4 py-6 border-b border-slate-200 mb-2">
         <div className="flex items-center gap-2">
-          <span className="font-medium text-slate-900">Welcome, 동욱</span>
+          <span className="font-medium text-xl text-slate-800">
+            <span className="">Welcome,</span> 동욱
+          </span>
         </div>
       </div>
       <div className="p-4 space-y-4 h-full">
