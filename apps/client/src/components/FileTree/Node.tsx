@@ -1,21 +1,21 @@
-import { ArrowDown, ArrowRight, Edit, File, Folder, X } from "lucide-react";
+import { Edit, File, Folder, X } from "lucide-react";
 import { NodeRendererProps } from "react-arborist";
 import { DataType } from "./mockData";
 
 const Node = ({
   node,
-  style,
   dragHandle,
   tree,
+  style,
 }: NodeRendererProps<DataType>) => {
   return (
     <div
       style={style}
       ref={dragHandle}
-      className="flex mb-2 group items-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-5 [&_svg]:shrink-0 h-9 rounded-md px-3 w-full justify-between gap-2 hover:bg-slate-100 text-slate-400 hover:text-slate-800"
+      className="flex p-2 mb-2 group items-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-5 [&_svg]:shrink-0 h-9 rounded-md px-3 w-full justify-between gap-2 hover:bg-slate-100 text-slate-400 hover:text-slate-800"
       onClick={() => node.isInternal && node.toggle()}
     >
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1 ml-3">
         {node.isLeaf ? (
           <>
             <span className="file-folder-icon">
@@ -24,15 +24,12 @@ const Node = ({
           </>
         ) : (
           <>
-            <span className="arrow">
-              {node.isOpen ? <ArrowDown /> : <ArrowRight />}
-            </span>
             <span className="">
               <Folder color="#f6cf60" />
             </span>
           </>
         )}
-        <span className="node-text">
+        <span>
           {node.isEditing ? (
             <input
               type="text"
