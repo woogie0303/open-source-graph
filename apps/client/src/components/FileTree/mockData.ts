@@ -1,10 +1,7 @@
 export type DataType = {
   id: string;
   name: string;
-  children?: {
-    id: string;
-    name: string;
-  }[];
+  children?: DataType[];
 };
 
 export const data: DataType[] = [
