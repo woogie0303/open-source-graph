@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { Types } from 'mongoose';
+import { CreateFileDto } from '../dto/fileTreeDto';
 import { FileRepository } from '../repository/file.repository';
 import { FileDocument } from '../schema/file.schema';
 import { FileTreeType } from '../types/FileTreeType';
@@ -39,5 +41,22 @@ export class FileService {
     });
 
     return tree;
+  }
+
+  async createFile({
+    userId,
+    fileData,
+  }: {
+    userId: string;
+    fileData: CreateFileDto;
+  }) {
+    return this.fileRepository.create({
+      name: fileData.name,
+      parentId: fileData.parentId
+        ? new Types.ObjectId(fileData.parentId)
+        : null,
+      isFolder: fileData.isFolder,
+      userId,
+    });
   }
 }
