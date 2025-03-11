@@ -71,4 +71,26 @@ export class FileService {
       },
     );
   }
+  async deleteFile(fileId: string) {
+    const fileObjectId = new Types.ObjectId(fileId);
+
+    const file = await this.fileRepository.findOne({ _id: fileObjectId });
+    if (file.isFolder) {
+      this.recursiveDeleteChildFile(fileObjectId);
+    } else {
+      this.fileRepository.deleteOne({ _id: fileObjectId });
+    }
+  }
+
+  async recursiveDeleteChildFile(fileId: Types.ObjectId) {
+    await this.fileRepository.deleteOne({ _id: fileId });
+
+    const childrenFile = await this.fileRepository.find({ parentId: fileId });
+
+    if (childrenFile.length === 0) return;
+
+    childrenFile.forEach((childFile) => {
+      this.recursiveDeleteChildFile(childFile._id);
+    });
+  }
 }
