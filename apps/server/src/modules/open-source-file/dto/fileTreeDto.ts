@@ -8,3 +8,10 @@ export class CreateFileDto {
   @IsBoolean()
   isFolder: boolean;
 }
+
+export class RenameFileDto {
+  @IsString()
+  id: string;
+  @IsString()
+  newName: string;
+}

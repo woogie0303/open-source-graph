@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Types } from 'mongoose';
-import { CreateFileDto } from '../dto/fileTreeDto';
+import { CreateFileDto, RenameFileDto } from '../dto/fileTreeDto';
 import { FileRepository } from '../repository/file.repository';
 import { FileDocument } from '../schema/file.schema';
 import { FileTreeType } from '../types/FileTreeType';
@@ -58,5 +58,17 @@ export class FileService {
       isFolder: fileData.isFolder,
       userId,
     });
+  }
+
+  async renameFile(fileData: RenameFileDto & { userId: string }) {
+    return await this.fileRepository.findOneAndUpdate(
+      {
+        _id: new Types.ObjectId(fileData.id),
+        userId: fileData.userId,
+      },
+      {
+        $set: { name: fileData.newName },
+      },
+    );
   }
 }

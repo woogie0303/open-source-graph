@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { CreateFileDto } from '../dto/fileTreeDto';
+import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
+import { CreateFileDto, RenameFileDto } from '../dto/fileTreeDto';
 import { FileService } from '../service/file.service';
 
 @Controller('file')
@@ -16,6 +16,14 @@ export class FileController {
     return this.fileService.createFile({
       userId: 'sdf',
       fileData,
+    });
+  }
+  @Patch('/rename')
+  renameFile(@Body() fileData: RenameFileDto) {
+    this.fileService.renameFile({
+      userId: 'sdf',
+      id: fileData.id,
+      newName: fileData.newName,
     });
   }
 }
