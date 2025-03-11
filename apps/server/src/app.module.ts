@@ -1,9 +1,14 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { FileModule } from './modules/open-source-file/file.module';
 
 @Module({
-  imports: [FileModule, MongooseModule.forRoot(process.env.MONGODB_URI)],
+  imports: [
+    ConfigModule.forRoot(),
+    MongooseModule.forRoot(process.env.MONGODB_URI),
+    FileModule,
+  ],
   controllers: [],
   providers: [],
 })

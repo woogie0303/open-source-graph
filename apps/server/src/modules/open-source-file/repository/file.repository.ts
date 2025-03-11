@@ -1,9 +1,13 @@
+import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { BaseRepository } from 'src/database/repository';
-import { FileDocument } from '../schema/file.schema';
+import { File, FileDocument } from '../schema/file.schema';
 
 export class FileRepository extends BaseRepository<FileDocument> {
-  constructor(private readonly fileModel: Model<FileDocument>) {
+  constructor(
+    @InjectModel(File.name)
+    private readonly fileModel: Model<FileDocument>,
+  ) {
     super(fileModel);
   }
 }
