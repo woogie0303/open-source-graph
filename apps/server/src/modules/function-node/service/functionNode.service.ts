@@ -31,4 +31,8 @@ export class FunctionNodeService {
       connection: changeIdToObjectId,
     });
   }
+
+  deleteFunctionNode(nodeId: string) {
+    this.functionNodeRepository.deleteOne({ _id: new Types.ObjectId(nodeId) });
+  }
 }

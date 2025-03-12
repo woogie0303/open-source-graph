@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
 import { CreateFunctionNodeDto } from '../dto/functionNode.dto';
 import { FunctionNodeService } from '../service/functionNode.service';
 
@@ -20,5 +20,10 @@ export class FunctionNodeController {
     newFunctionNode: CreateFunctionNodeDto,
   ) {
     return this.functionNodeService.createFunctionNode(newFunctionNode);
+  }
+
+  @Delete()
+  deleteFunctionNode(@Query('nodeId') nodeId: string) {
+    this.functionNodeService.deleteFunctionNode(nodeId);
   }
 }
