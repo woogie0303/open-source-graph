@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
+import { EditorBlock } from '../types/functionNode.type';
 
 @Schema({ timestamps: true })
 export class FunctionNode {
@@ -14,6 +15,9 @@ export class FunctionNode {
 
   @Prop({ type: Types.ObjectId, ref: 'FunctionNode', default: null })
   connection: Types.ObjectId[] | null;
+
+  @Prop()
+  editorBlock?: EditorBlock[];
 }
 
 export type FunctionNodeDocument = HydratedDocument<FunctionNode>;

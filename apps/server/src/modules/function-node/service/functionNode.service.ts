@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { Types } from 'mongoose';
-import { CreateFunctionNodeDto } from '../dto/functionNode.dto';
+import {
+  CreateFunctionNodeDto,
+  UpdateEditorBlockDto,
+} from '../dto/functionNode.dto';
 import { FunctionNodeRepository } from '../repository/functionNode.repository';
 
 @Injectable()
@@ -34,5 +37,14 @@ export class FunctionNodeService {
 
   deleteFunctionNode(nodeId: string) {
     this.functionNodeRepository.deleteOne({ _id: new Types.ObjectId(nodeId) });
+  }
+
+  async updateEditorBlock(updateEditorBlockDto: UpdateEditorBlockDto) {
+    return await this.functionNodeRepository.findOneAndUpdate(
+      { _id: new Types.ObjectId(updateEditorBlockDto.functionNodeId) },
+      {
+        $set: updateEditorBlockDto.editorBlock,
+      },
+    );
   }
 }

@@ -1,5 +1,16 @@
-import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
-import { CreateFunctionNodeDto } from '../dto/functionNode.dto';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
+import {
+  CreateFunctionNodeDto,
+  UpdateEditorBlockDto,
+} from '../dto/functionNode.dto';
 import { FunctionNodeService } from '../service/functionNode.service';
 
 @Controller('function-nodes')
@@ -25,5 +36,13 @@ export class FunctionNodeController {
   @Delete()
   deleteFunctionNode(@Query('nodeId') nodeId: string) {
     this.functionNodeService.deleteFunctionNode(nodeId);
+  }
+
+  @Patch('editor-block')
+  updateEditorBlock(
+    @Body()
+    updateEditorBlockDto: UpdateEditorBlockDto,
+  ) {
+    this.functionNodeService.updateEditorBlock(updateEditorBlockDto);
   }
 }

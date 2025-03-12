@@ -1,4 +1,5 @@
 import { IsArray, IsString } from 'class-validator';
+import { EditorBlock } from '../types/functionNode.type';
 
 export class CreateFunctionNodeDto {
   @IsString()
@@ -13,4 +14,9 @@ export class CreateFunctionNodeDto {
   @IsArray()
   @IsString({ each: true })
   connection: string[] | null;
+}
+
+export class UpdateEditorBlockDto {
+  functionNodeId: string;
+  editorBlock: EditorBlock[];
 }
