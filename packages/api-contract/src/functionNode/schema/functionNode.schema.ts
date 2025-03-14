@@ -15,7 +15,7 @@ export const FunctionNodeSchema = z.object({
     )
     .optional(),
 });
-const hi = "sdf";
+
 export const CreateFunctionNodeDtoSchema = FunctionNodeSchema.pick({
   name: true,
   fileId: true,
