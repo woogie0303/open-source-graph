@@ -100,3 +100,15 @@ h6.ce-header {
 .codex-editor__redactor {
   padding-bottom: 0 !important;
 }
+
+@media (width >= 651px) {
+  .codex-editor:not(.codex-editor--narrow)
+    > .codex-editor__redactor
+    > .ce-block
+    .ce-block__content,
+  .codex-editor:not(.codex-editor--narrow)
+    > .ce-toolbar
+    > .ce-toolbar__content {
+    margin-left: 50px;
+  }
+}

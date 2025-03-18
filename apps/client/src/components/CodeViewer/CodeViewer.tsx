@@ -40,7 +40,7 @@ const customTheme = createTheme({
 
 export default function CodeViewer() {
   const [code, setCode] = useState("");
-  const targetLine = 450;
+  const targetLine = 144;
   const divRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const rawUrl =
