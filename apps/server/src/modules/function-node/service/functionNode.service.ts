@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
 import { Types } from 'mongoose';
 import {
   CreateFunctionNodeDto,
   UpdateEditorBlockDto,
 } from '../dto/functionNode.dto';
 import { FunctionNodeRepository } from '../repository/functionNode.repository';
+import { FunctionNode } from '../schema/functionNode.schema';
 
 @Injectable()
 export class FunctionNodeService {
@@ -13,25 +15,20 @@ export class FunctionNodeService {
   ) {}
 
   async getAllFunctionNodes(fileId: string) {
-    return await this.functionNodeRepository.find({ fileId });
+    const data = await this.functionNodeRepository.find({
+      fileId: new Types.ObjectId(fileId),
+    });
+    return plainToInstance(FunctionNode, data, {
+      excludeExtraneousValues: true,
+    });
   }
 
   async createFunctionNode(newFunctionNode: CreateFunctionNodeDto) {
-    const changeIdToObjectId = newFunctionNode.connection?.map(
-      (id) => new Types.ObjectId(id),
-    );
-    console.log({
-      name: newFunctionNode.name,
-      codeText: newFunctionNode.codeText,
-      fileId: new Types.ObjectId(newFunctionNode.fileId),
-      connection: changeIdToObjectId,
-    });
-
     return await this.functionNodeRepository.create({
       name: newFunctionNode.name,
       codeText: newFunctionNode.codeText,
       fileId: new Types.ObjectId(newFunctionNode.fileId),
-      connection: changeIdToObjectId,
+      connection: newFunctionNode.connection,
     });
   }
 
@@ -41,7 +38,7 @@ export class FunctionNodeService {
 
   async updateEditorBlock(updateEditorBlockDto: UpdateEditorBlockDto) {
     return await this.functionNodeRepository.findOneAndUpdate(
-      { _id: new Types.ObjectId(updateEditorBlockDto.functionNodeId) },
+      { id: updateEditorBlockDto.functionNodeId },
       {
         $set: updateEditorBlockDto.editorBlock,
       },

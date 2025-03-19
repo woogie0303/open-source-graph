@@ -19,7 +19,7 @@ export class FunctionNodeController {
 
   @Get('')
   getAllFunctionNodes(
-    @Query(':fileId')
+    @Query('fileId')
     fileId: string,
   ) {
     return this.functionNodeService.getAllFunctionNodes(fileId);

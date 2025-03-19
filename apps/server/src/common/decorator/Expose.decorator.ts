@@ -1,0 +1,48 @@
+import { applyDecorators } from '@nestjs/common';
+import { ExposeOptions, Transform } from 'class-transformer';
+import { NotEquals } from 'class-validator';
+import mongoose, { Types } from 'mongoose';
+
+const failToConvertMongoId = 'mongoIdCheckFail';
+
+const ObjectIdTransForm =
+  (options?: ExposeOptions) => (target, propertyKey) => {
+    Transform(({ value, obj }) => {
+      switch (true) {
+        case Array.isArray(value):
+          const objectIdArr = value.map((el) => {
+            if (mongoose.isValidObjectId(el)) return new Types.ObjectId(el);
+          });
+
+          if (objectIdArr.length !== value.length) return failToConvertMongoId;
+          return objectIdArr;
+        default:
+          if (!mongoose.isValidObjectId(obj[propertyKey]))
+            return failToConvertMongoId;
+          return new Types.ObjectId(obj[propertyKey]);
+      }
+    }, options)(target, propertyKey);
+  };
+
+export const TransformObjectIdToString =
+  (options?: ExposeOptions) => (target, propertyKey) => {
+    Transform(({ value, obj }) => {
+      switch (true) {
+        case !value:
+          return obj._id.toString();
+        case Array.isArray(value):
+          return value.map((el) => el._id.toString());
+        default:
+          return value._id.toString();
+      }
+    }, options)(target, propertyKey);
+  };
+
+export const TransformValidationObjectId = (options?: ExposeOptions) => {
+  return applyDecorators(
+    ObjectIdTransForm(options),
+    NotEquals(failToConvertMongoId, {
+      message: 'MongoId 형식 오류',
+    }),
+  );
+};
