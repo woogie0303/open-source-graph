@@ -1,14 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import {
-  Document,
-  FilterQuery,
-  HydratedDocument,
-  Model,
-  UpdateQuery,
-} from 'mongoose';
+import { FilterQuery, HydratedDocument, Model, UpdateQuery } from 'mongoose';
 
 @Injectable()
-export abstract class BaseRepository<T extends Document> {
+export abstract class BaseRepository<T> {
   constructor(protected readonly model: Model<T>) {}
 
   async findOne(documentFilterQuery: FilterQuery<T>): Promise<T | null> {
@@ -24,7 +18,10 @@ export abstract class BaseRepository<T extends Document> {
   }
 
   async find(documentFilterQuery: FilterQuery<T>): Promise<T[]> {
-    return await this.model.find(documentFilterQuery).exec();
+    return await this.model
+      .find(documentFilterQuery)
+      .lean<T[]>({ default: true })
+      .exec();
   }
 
   async create(createDocumentData: Partial<T>): Promise<T> {
@@ -38,9 +35,13 @@ export abstract class BaseRepository<T extends Document> {
     updateFilterData: UpdateQuery<Partial<T>>,
   ) {
     return this.model
-      .updateOne(documentFilterQuery, updateFilterData, {
-        new: true,
-      })
+      .updateOne(
+        documentFilterQuery,
+        { $set: updateFilterData },
+        {
+          new: true,
+        },
+      )
       .exec();
   }
 
@@ -49,9 +50,13 @@ export abstract class BaseRepository<T extends Document> {
     updateFilterData: UpdateQuery<Partial<T>>,
   ) {
     return this.model
-      .findOneAndUpdate(documentFilterQuery, updateFilterData, {
-        new: true,
-      })
+      .findOneAndUpdate(
+        documentFilterQuery,
+        { $set: updateFilterData },
+        {
+          new: true,
+        },
+      )
       .exec();
   }
 
