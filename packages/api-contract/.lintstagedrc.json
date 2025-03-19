@@ -1,3 +1,0 @@
-{
-  "*.{ts,js,jsx,tsx}": ["bash -c 'pnpm run check-types'"]
-}
