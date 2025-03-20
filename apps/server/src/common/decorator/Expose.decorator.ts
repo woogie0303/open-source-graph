@@ -16,6 +16,9 @@ const ObjectIdTransForm =
 
           if (objectIdArr.length !== value.length) return failToConvertMongoId;
           return objectIdArr;
+        // file parent id 때문
+        case value === null:
+          return null;
         default:
           if (!mongoose.isValidObjectId(obj[propertyKey]))
             return failToConvertMongoId;

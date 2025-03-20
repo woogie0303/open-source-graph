@@ -1,6 +1,6 @@
 import { plainToInstance } from 'class-transformer';
 
-export const returnValueToDto =
+export const ReturnValueToDto =
   (dto) =>
   (
     target,
