@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Types } from 'mongoose';
 import { ReturnValueToDto } from 'src/common/decorator/ReturnValueToDto.decorator';
+import { DeleteNodeDto } from '../dto/DeleteNode.dto';
 import {
   CreateFunctionNodeDto,
   UpdateEditorBlockDto,
@@ -31,8 +32,8 @@ export class FunctionNodeService {
     });
   }
 
-  deleteFunctionNode(nodeId: string) {
-    this.functionNodeRepository.deleteOne({ _id: new Types.ObjectId(nodeId) });
+  deleteFunctionNode(deleteNodeDto: DeleteNodeDto) {
+    this.functionNodeRepository.deleteOne({ _id: deleteNodeDto.id });
   }
 
   async updateEditorBlock(updateEditorBlockDto: UpdateEditorBlockDto) {

@@ -7,7 +7,7 @@ const failToConvertMongoId = 'mongoIdCheckFail';
 
 const ObjectIdTransForm =
   (options?: ExposeOptions) => (target, propertyKey) => {
-    Transform(({ value, obj }) => {
+    Transform(({ value }) => {
       switch (true) {
         case Array.isArray(value):
           const objectIdArr = value.map((el) => {
@@ -20,9 +20,8 @@ const ObjectIdTransForm =
         case value === null:
           return null;
         default:
-          if (!mongoose.isValidObjectId(obj[propertyKey]))
-            return failToConvertMongoId;
-          return new Types.ObjectId(obj[propertyKey]);
+          if (!mongoose.isValidObjectId(value)) return failToConvertMongoId;
+          return new Types.ObjectId(value);
       }
     }, options)(target, propertyKey);
   };

@@ -7,6 +7,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { DeleteNodeDto } from '../dto/DeleteNode.dto';
 import {
   CreateFunctionNodeDto,
   UpdateEditorBlockDto,
@@ -34,8 +35,8 @@ export class FunctionNodeController {
   }
 
   @Delete()
-  deleteFunctionNode(@Query('nodeId') nodeId: string) {
-    this.functionNodeService.deleteFunctionNode(nodeId);
+  deleteFunctionNode(@Query() deleteNodeDto: DeleteNodeDto) {
+    this.functionNodeService.deleteFunctionNode(deleteNodeDto);
   }
 
   @Patch('editor-block')

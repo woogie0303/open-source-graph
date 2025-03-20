@@ -8,6 +8,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { CreateFileDto } from '../dto/CreateFile.dto';
+import { DeleteFileDto } from '../dto/DeleteFile.dto';
 import { RenameFileDto } from '../dto/RenameFile.dto';
 import { FileService } from '../service/file.service';
 
@@ -38,9 +39,9 @@ export class FileController {
 
   @Delete('')
   deleteFile(
-    @Query('id')
-    fileId: string,
+    @Query()
+    deleteFileDto: DeleteFileDto,
   ) {
-    this.fileService.deleteFile(fileId);
+    this.fileService.deleteFile(deleteFileDto);
   }
 }

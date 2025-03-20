@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Types } from 'mongoose';
 import { ReturnValueToDto } from 'src/common/decorator/ReturnValueToDto.decorator';
 import { CreateFileDto } from '../dto/CreateFile.dto';
+import { DeleteFileDto } from '../dto/DeleteFile.dto';
 import { FileTreeDto } from '../dto/FileTree.dto';
 import { RenameFileDto } from '../dto/RenameFile.dto';
 import { FileRepository } from '../repository/file.repository';
@@ -73,14 +74,12 @@ export class FileService {
       { name: fileData.newName },
     );
   }
-  async deleteFile(fileId: string) {
-    const fileObjectId = new Types.ObjectId(fileId);
-
-    const file = await this.fileRepository.findOne({ _id: fileObjectId });
+  async deleteFile(deleteFileDto: DeleteFileDto) {
+    const file = await this.fileRepository.findOne({ _id: deleteFileDto.id });
     if (file.isFolder) {
-      this.recursiveDeleteChildFile(fileObjectId);
+      this.recursiveDeleteChildFile(deleteFileDto.id);
     } else {
-      this.fileRepository.deleteOne({ _id: fileObjectId });
+      this.fileRepository.deleteOne({ _id: deleteFileDto.id });
     }
   }
 
