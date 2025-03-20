@@ -28,6 +28,9 @@ export const TransformObjectIdToString =
   (options?: ExposeOptions) => (target, propertyKey) => {
     Transform(({ value, obj }) => {
       switch (true) {
+        // string값 체크 이유는 repository의 find메서드에 lean을 사용했기 때문
+        case typeof value === 'string':
+          return value;
         case !value:
           return obj._id.toString();
         case Array.isArray(value):
