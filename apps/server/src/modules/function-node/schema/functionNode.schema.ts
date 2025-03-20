@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Expose, Type } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import { HydratedDocument, Types } from 'mongoose';
 import { TransformObjectIdToString } from 'src/common/decorator/Expose.decorator';
 import { EditorBlock } from '../types/functionNode.type';
@@ -7,7 +7,6 @@ import { EditorBlock } from '../types/functionNode.type';
 @Schema({ timestamps: true })
 export class FunctionNode {
   @TransformObjectIdToString({ toClassOnly: true })
-  @Type(() => Types.ObjectId)
   @Expose()
   id: Types.ObjectId;
 
