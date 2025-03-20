@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Types } from 'mongoose';
 import { ReturnValueToDto } from 'src/common/decorator/ReturnValueToDto.decorator';
 import { CreateFileDto } from '../dto/CreateFile.dto';
+import { FileTreeDto } from '../dto/FileTree.dto';
 import { RenameFileDto } from '../dto/RenameFile.dto';
 import { FileRepository } from '../repository/file.repository';
 import { File, FileDocument } from '../schema/file.schema';
@@ -10,6 +11,8 @@ import { FileTreeType } from '../types/FileTreeType';
 @Injectable()
 export class FileService {
   constructor(private readonly fileRepository: FileRepository) {}
+
+  @ReturnValueToDto(FileTreeDto)
   async getUserFiles(userId: string) {
     const files = await this.fileRepository.find({ userId });
 

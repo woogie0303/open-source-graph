@@ -13,6 +13,7 @@ export class File {
   @Expose()
   name: string;
 
+  @TransformObjectIdToString({ toClassOnly: true })
   @Prop({ type: Types.ObjectId, ref: 'File', default: null })
   @Expose()
   parentId: Types.ObjectId | null;
