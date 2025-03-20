@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Types } from 'mongoose';
-import { returnValueToDto } from 'src/common/decorator/returnValueToDto.decorator';
+import { ReturnValueToDto } from 'src/common/decorator/ReturnValueToDto.decorator';
 import {
   CreateFunctionNodeDto,
   UpdateEditorBlockDto,
@@ -14,14 +14,14 @@ export class FunctionNodeService {
     private readonly functionNodeRepository: FunctionNodeRepository,
   ) {}
 
-  @returnValueToDto(FunctionNode)
+  @ReturnValueToDto(FunctionNode)
   async getAllFunctionNodes(fileId: string) {
     return await this.functionNodeRepository.find({
       fileId: new Types.ObjectId(fileId),
     });
   }
 
-  @returnValueToDto(FunctionNode)
+  @ReturnValueToDto(FunctionNode)
   async createFunctionNode(newFunctionNode: CreateFunctionNodeDto) {
     return await this.functionNodeRepository.create({
       name: newFunctionNode.name,

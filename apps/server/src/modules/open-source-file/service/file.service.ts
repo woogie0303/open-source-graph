@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Types } from 'mongoose';
-import { CreateFileDto, RenameFileDto } from '../dto/fileTreeDto';
+import { ReturnValueToDto } from 'src/common/decorator/ReturnValueToDto.decorator';
+import { CreateFileDto } from '../dto/CreateFile.dto';
+import { RenameFileDto } from '../dto/RenameFile.dto';
 import { FileRepository } from '../repository/file.repository';
-import { FileDocument } from '../schema/file.schema';
+import { File, FileDocument } from '../schema/file.schema';
 import { FileTreeType } from '../types/FileTreeType';
 
 @Injectable()
@@ -43,6 +45,7 @@ export class FileService {
     return tree;
   }
 
+  @ReturnValueToDto(File)
   async createFile({
     userId,
     fileData,
@@ -52,9 +55,7 @@ export class FileService {
   }) {
     return this.fileRepository.create({
       name: fileData.name,
-      parentId: fileData.parentId
-        ? new Types.ObjectId(fileData.parentId)
-        : null,
+      parentId: fileData.parentId,
       isFolder: fileData.isFolder,
       userId,
     });
@@ -66,9 +67,7 @@ export class FileService {
         _id: new Types.ObjectId(fileData.id),
         userId: fileData.userId,
       },
-      {
-        $set: { name: fileData.newName },
-      },
+      { name: fileData.newName },
     );
   }
   async deleteFile(fileId: string) {

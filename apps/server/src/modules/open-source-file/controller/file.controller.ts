@@ -7,7 +7,8 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { CreateFileDto, RenameFileDto } from '../dto/fileTreeDto';
+import { CreateFileDto } from '../dto/CreateFile.dto';
+import { RenameFileDto } from '../dto/RenameFile.dto';
 import { FileService } from '../service/file.service';
 
 @Controller('file')
