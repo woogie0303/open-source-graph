@@ -120,7 +120,7 @@ const NetworkGraph = ({
       .on("dblclick.zoom", null);
   }, [activeZoomNode]);
 
-  return <svg ref={svgRef} className="w-full h-screen"></svg>;
+  return <svg ref={svgRef} className="w-full h-inherit"></svg>;
 };
 
 export default NetworkGraph;

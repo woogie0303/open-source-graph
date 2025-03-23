@@ -1,26 +1,19 @@
-import { FileTree } from "../FileTree";
+import AddFileNodeButton from "../NetworkGraph/AddFileNodeButton";
 
 export default function Navbar() {
   return (
-    <div className="border-r bg-background border-slate-200 w-[300px] h-screen flex flex-col">
-      <div className="px-4 py-6 border-b border-slate-200 mb-2">
-        <div className="flex items-center gap-2">
-          <span className="font-medium text-xl text-slate-800">
-            <span className="">Welcome,</span> 동욱
-          </span>
-        </div>
+    <div className="hidden lg:flex h-16 bg-white border-b border-slate-200 items-center justify-between px-6 z-30">
+      <div className="flex items-center gap-4">
+        <h1 className="text-xl font-semibold text-slate-900">함수 지도</h1>
       </div>
-      <div className="p-4 space-y-4 h-full">
-        <FileTree />
-
-        {/* <div className="space-y-1">
-          {fileList.map((file) => (
-            <button className="inline-flex items-center whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 h-9 rounded-md px-3 w-full justify-start gap-2 hover:bg-slate-100 text-slate-400 hover:text-slate-800">
-              <FileText className="h-4 w-4" />
-              {file}
-            </button>
-          ))}
-        </div> */}
+      <div className="flex items-center gap-4">
+        <AddFileNodeButton />
+        <div className="flex items-center gap-2 ml-4">
+          <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium">
+            JD
+          </div>
+          <span className="text-sm font-medium text-slate-700">John Doe</span>
+        </div>
       </div>
     </div>
   );

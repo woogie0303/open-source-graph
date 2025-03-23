@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Navbar } from "./components/Navbar";
 import { NetworkGraph } from "./components/NetworkGraph";
 import { NodeInform } from "./components/NodeInform";
 
+import { FileTree } from "./components/FileTree";
+import { Navbar } from "./components/Navbar";
 import "./index.css";
 const sampleData = {
   files: [
@@ -50,15 +51,18 @@ const sampleData = {
 function App() {
   const [activeNode, setActiveNode] = useState(false);
   return (
-    <div className="flex h-full">
+    <div className=" h-full">
       <Navbar />
-      <NetworkGraph
-        data={sampleData.functions}
-        onNodeClick={() => {
-          setActiveNode(true);
-        }}
-      />
-      {activeNode && <NodeInform />}
+      <div className="flex h-[calc(100vh-64px)]">
+        <FileTree />
+        <NetworkGraph
+          data={sampleData.functions}
+          onNodeClick={() => {
+            setActiveNode(true);
+          }}
+        />
+        {activeNode && <NodeInform />}
+      </div>
     </div>
   );
 }

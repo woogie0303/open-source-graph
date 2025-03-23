@@ -11,7 +11,7 @@ const Arborist = () => {
   const [fileTreeData, controller] = useSimpleTree(data);
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-inherit flex flex-col border-r bg-background border-slate-200 w-[300px] p-5">
       <div className="flex justify-between items-center mb-3">
         <h3 className="font-medium text-slate-700">Files</h3>
         <div className="gap-2 flex">
