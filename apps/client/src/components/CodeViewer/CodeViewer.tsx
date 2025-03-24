@@ -3,7 +3,7 @@ import { tags as t } from "@lezer/highlight";
 import { createTheme } from "@uiw/codemirror-themes";
 import CodeMirror from "@uiw/react-codemirror";
 import { useEffect, useRef, useState } from "react";
-import { getFullCodeBlock } from "./utils";
+import { parseCodeFromStartLine } from "../NetworkGraph/utils/parseCodeFromStartLine";
 
 const customTheme = createTheme({
   theme: "light",
@@ -49,7 +49,9 @@ export default function CodeViewer() {
     fetch(rawUrl)
       .then((response) => response.text())
       .then((text) => {
-        setCode(getFullCodeBlock({ code: text, startLine: targetLine - 1 }));
+        setCode(
+          parseCodeFromStartLine({ code: text, startLine: targetLine - 1 }),
+        );
       });
   }, []);
   return (

@@ -1,26 +1,27 @@
-function getFullCodeBlock({
+export const parseCodeFromStartLine = ({
   code,
   startLine,
 }: {
   code: string;
   startLine: number;
-}) {
+}) => {
+  const startIndex = startLine - 1;
   const lines = code.split("\n");
 
   // 시작 라인이 유효한지 확인
-  if (startLine < 0 || startLine >= lines.length) {
-    console.error("시작 라인이 유효하지 않습니다:", startLine);
+  if (startIndex < 0 || startIndex >= lines.length) {
+    console.error("시작 라인이 유효하지 않습니다:", startIndex);
     return "";
   }
 
-  const firstLine = lines[startLine];
+  const firstLine = lines[startIndex];
   if (
     !firstLine.includes("const") &&
     !firstLine.includes("function") &&
     !firstLine.includes("class")
   ) {
     // TODO: rq 에러처리하기
-    return lines[startLine]; // 함수/변수 선언이 아니면 해당 라인만 반환
+    return lines[startIndex]; // 함수/변수 선언이 아니면 해당 라인만 반환
   }
 
   const extractedCode = [];
@@ -29,7 +30,7 @@ function getFullCodeBlock({
   let startFound = false;
 
   // 시작 위치에서부터 코드 분석
-  for (let i = startLine; i < lines.length; i++) {
+  for (let i = startIndex; i < lines.length; i++) {
     const line = lines[i];
     extractedCode.push(line);
 
@@ -43,11 +44,10 @@ function getFullCodeBlock({
       else if (char === ")") openParens--;
     }
 
-    if (startFound && openBraces === 0 && openParens === 0 && i > startLine) {
+    if (startFound && openBraces === 0 && openParens === 0 && i > startIndex) {
       break;
     }
   }
 
   return extractedCode.join("\n");
-}
-export default getFullCodeBlock;
+};
