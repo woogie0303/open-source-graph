@@ -1,7 +1,40 @@
+import { requestGetGithubCode } from "@/apis/request/functionNode";
 import { Dialog } from "@/components/common/Dialog";
-import { GitFork, X } from "lucide-react";
+import { useRequestCreateFunctionNode } from "@/hooks/queries/functionNode/useRequestCreateFunctionNode";
+import { GitFork, TriangleAlert, X } from "lucide-react";
+import { FormEventHandler, useRef } from "react";
+import { parseCodeFromStartLine } from "./utils/parseCodeFromStartLine";
 
 export default function AddFunctionNodeDialog() {
+  const { createFunctionNode } = useRequestCreateFunctionNode();
+  const functionNodeUrlRef = useRef<HTMLInputElement>(null);
+  const functionNodeTitleRef = useRef<HTMLInputElement>(null);
+
+  const createFunctionNodeSubmitHandler: FormEventHandler<
+    HTMLFormElement
+  > = async (e) => {
+    e.preventDefault();
+    if (
+      !functionNodeUrlRef.current?.value ||
+      !functionNodeTitleRef.current?.value
+    )
+      return;
+
+    const res = await requestGetGithubCode(functionNodeUrlRef.current?.value);
+    if (res) {
+      const codeText = parseCodeFromStartLine({
+        code: res.codeText,
+        startLine: res.startLine,
+      });
+
+      createFunctionNode({
+        fileId: "67db86af30debd30c8953cc0",
+        codeText,
+        name: functionNodeTitleRef.current.value,
+        connection: [],
+      });
+    }
+  };
   return (
     <Dialog>
       <Dialog.Trigger>
@@ -24,7 +57,10 @@ export default function AddFunctionNodeDialog() {
             </button>
           </div>
           <div className="p-6">
-            <form className="space-y-4">
+            <form
+              className="space-y-4"
+              onSubmit={createFunctionNodeSubmitHandler}
+            >
               <div className="space-y-2">
                 <label
                   htmlFor="github-url"
@@ -34,12 +70,17 @@ export default function AddFunctionNodeDialog() {
                 </label>
                 <input
                   id="github-url"
+                  ref={functionNodeUrlRef}
                   type="text"
                   placeholder="예) https://github.com/user/repo/blob/main/src/components/Button.tsx/#L10"
                   className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
                         focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   required
                 />
+                <p className="text-xs text-slate-500 flex items-center gap-1">
+                  <TriangleAlert size={18} className="text-red-600" />
+                  <span>함수 URL만 입력해주세요</span>
+                </p>
               </div>
               <div className="space-y-2">
                 <label
@@ -50,14 +91,12 @@ export default function AddFunctionNodeDialog() {
                 </label>
                 <input
                   id="function-title"
+                  ref={functionNodeTitleRef}
                   type="text"
                   placeholder="함수 이름 입력"
                   className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
                         focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 />
-                <p className="text-xs text-slate-500">
-                  코드에서 함수 이름을 자동으로 사용하려면 비워두세요
-                </p>
               </div>
               <button
                 type="submit"
