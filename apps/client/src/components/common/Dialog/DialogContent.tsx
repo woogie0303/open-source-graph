@@ -41,7 +41,7 @@ export default function DialogContent({
           }}
           aria-expanded={context.open}
           className={cn(
-            "fixed top-1/2 left-1/2 bg-white w-fit h-fit bottom-1/2 rounded-md p-3 block",
+            "fixed top-1/2 z-50 left-1/2 bg-white w-fit h-fit bottom-1/2 rounded-md p-3 block",
           )}
         >
           {children}

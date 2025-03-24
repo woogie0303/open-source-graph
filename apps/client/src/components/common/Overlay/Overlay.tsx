@@ -7,7 +7,7 @@ const Overlay = ({ onClick }: OverlayProps) => {
     <div
       onClick={onClick}
       role="none"
-      className="fixed inset-0 h-screen w-screen bg-black/30"
+      className="fixed inset-0 h-screen w-screen bg-black/30 z-40"
     />
   );
 };
