@@ -1,4 +1,4 @@
-import AddFileNodeButton from "../NetworkGraph/AddFileNodeButton";
+import AddFunctionNodeDialog from "../NetworkGraph/AddFunctionNodeDialog";
 
 export default function Navbar() {
   return (
@@ -7,7 +7,7 @@ export default function Navbar() {
         <h1 className="text-xl font-semibold text-slate-900">함수 지도</h1>
       </div>
       <div className="flex items-center gap-4">
-        <AddFileNodeButton />
+        <AddFunctionNodeDialog />
         <div className="flex items-center gap-2 ml-4">
           <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium">
             JD
