@@ -25,11 +25,18 @@ export class FileService {
     const tree: FileTreeType[] = [];
 
     files.forEach((file) => {
-      fileMap.set(file._id.toString(), {
-        id: file._id.toString(),
-        name: file.name,
-        children: file.isFolder ? [] : null,
-      });
+      if (file.isFolder) {
+        fileMap.set(file._id.toString(), {
+          id: file._id.toString(),
+          name: file.name,
+          children: [],
+        });
+      } else {
+        fileMap.set(file._id.toString(), {
+          id: file._id.toString(),
+          name: file.name,
+        });
+      }
     });
 
     files.forEach((file) => {
