@@ -28,18 +28,20 @@ export default function DialogContent({
         <motion.div
           id={context.modalId}
           initial={{
-            translateY: "20%",
+            translateY: "-45%",
             translateX: "-50%",
           }}
           animate={{
             translateY: "-50%",
           }}
           aria-modal
+          style={{
+            width: width && `${width}px`,
+            height: height && `${height}px`,
+          }}
           aria-expanded={context.open}
           className={cn(
             "fixed top-1/2 left-1/2 bg-white w-fit h-fit bottom-1/2 rounded-md p-3 block",
-            width && `w-[${width}px]`,
-            height && `h-[${height}px]`,
           )}
         >
           {children}
