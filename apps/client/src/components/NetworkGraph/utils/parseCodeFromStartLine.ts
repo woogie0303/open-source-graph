@@ -8,20 +8,8 @@ export const parseCodeFromStartLine = ({
   const startIndex = startLine - 1;
   const lines = code.split("\n");
 
-  // 시작 라인이 유효한지 확인
   if (startIndex < 0 || startIndex >= lines.length) {
-    console.error("시작 라인이 유효하지 않습니다:", startIndex);
-    return "";
-  }
-
-  const firstLine = lines[startIndex];
-  if (
-    !firstLine.includes("const") &&
-    !firstLine.includes("function") &&
-    !firstLine.includes("class")
-  ) {
-    // TODO: rq 에러처리하기
-    return lines[startIndex]; // 함수/변수 선언이 아니면 해당 라인만 반환
+    throw new Error(`시작 라인이 유효하지 않습니다: ${startIndex}`);
   }
 
   const extractedCode = [];
@@ -29,7 +17,18 @@ export const parseCodeFromStartLine = ({
   let openParens = 0;
   let startFound = false;
 
-  // 시작 위치에서부터 코드 분석
+  const firstLine = lines[startIndex].trim();
+
+  // 첫 줄에 '('가 있는지 확인
+  if (!firstLine.includes("(")) {
+    throw new Error("첫 줄에 '(' 가 포함되어야 합니다.");
+  }
+
+  if (firstLine.includes(")") && !firstLine.includes("{")) {
+    throw new Error("첫 줄에 '{' 가 포함되어야 합니다.");
+  }
+
+  // 코드 블록을 분석하여 추출
   for (let i = startIndex; i < lines.length; i++) {
     const line = lines[i];
     extractedCode.push(line);
@@ -38,6 +37,9 @@ export const parseCodeFromStartLine = ({
     for (const char of line) {
       if (char === "{") {
         openBraces++;
+        if (openBraces === 1 && !line.replace(/\s/g, "").includes(")")) {
+          throw new Error("함수 형식이 아닙니다.");
+        }
         startFound = true;
       } else if (char === "}") openBraces--;
       else if (char === "(") openParens++;
