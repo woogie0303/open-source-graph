@@ -1,10 +1,11 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
-import { NetworkGraph } from "./components/NetworkGraph";
-import { NodeInform } from "./components/NodeInform";
-
 import { FileTree } from "./components/FileTree";
 import { Navbar } from "./components/Navbar";
+import { NetworkGraph } from "./components/NetworkGraph";
+import { NodeInform } from "./components/NodeInform";
 import "./index.css";
+
 const sampleData = {
   files: [
     {
@@ -48,22 +49,26 @@ const sampleData = {
   ],
 };
 
+const queryClient = new QueryClient();
+
 function App() {
   const [activeNode, setActiveNode] = useState(false);
   return (
-    <div className=" h-full">
-      <Navbar />
-      <div className="flex h-[calc(100vh-64px)]">
-        <FileTree />
-        <NetworkGraph
-          data={sampleData.functions}
-          onNodeClick={() => {
-            setActiveNode(true);
-          }}
-        />
-        {activeNode && <NodeInform />}
+    <QueryClientProvider client={queryClient}>
+      <div className=" h-full">
+        <Navbar />
+        <div className="flex h-[calc(100vh-64px)]">
+          <FileTree />
+          <NetworkGraph
+            data={sampleData.functions}
+            onNodeClick={() => {
+              setActiveNode(true);
+            }}
+          />
+          {activeNode && <NodeInform />}
+        </div>
       </div>
-    </div>
+    </QueryClientProvider>
   );
 }
 
