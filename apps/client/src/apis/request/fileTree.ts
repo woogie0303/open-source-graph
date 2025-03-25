@@ -1,13 +1,13 @@
 import { fetcher } from "../fetcher";
 
-type ResponseFileTreeNode = {
+export type ResponseFileTreeNode = {
   id: string;
   name: string;
   children?: ResponseFileTreeNode[];
 };
 
 export const requestGetFileTreeNode = async () => {
-  const data = await fetcher.get<ResponseFileTreeNode>({
+  const data = await fetcher.get<ResponseFileTreeNode[]>({
     path: "/file/all",
   });
 
@@ -52,7 +52,7 @@ export const requestUpdateFileTreeNodeName = async ({
   newName,
 }: RequestUpdateFileTreeNodeName) => {
   const data = await fetcher.patch({
-    path: "/file",
+    path: "/file/rename",
     body: { id, newName },
   });
 
