@@ -17,7 +17,6 @@ export const requestGetFileTreeNode = async () => {
 export type RequestCreateFileTreeNode = {
   name: string;
   parentId: string | null;
-  index: number;
   isFolder: boolean;
 };
 
@@ -32,11 +31,10 @@ export const requestCreateFileTreeNode = async ({
   name,
   parentId,
   isFolder,
-  index,
 }: RequestCreateFileTreeNode) => {
   const data = await fetcher.postWithResponse<ResponseCreateFileTreeNode>({
     path: "/file",
-    body: { name, parentId, isFolder, index },
+    body: { name, parentId, isFolder },
   });
 
   return data;

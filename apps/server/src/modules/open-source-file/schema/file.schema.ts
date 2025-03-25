@@ -24,9 +24,6 @@ export class File {
   userId: string;
 
   @Prop({ required: true })
-  index: number;
-
-  @Prop({ required: true })
   @Expose()
   isFolder: boolean;
 }
