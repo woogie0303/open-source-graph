@@ -20,7 +20,9 @@ const apiCall =
       });
 
       if (!response.ok) {
-        throw new Error("sdfsdf");
+        const errRes = await response.body?.getReader().read();
+        const errorText = new TextDecoder().decode(errRes?.value);
+        console.log(JSON.parse(errorText));
       }
 
       return response;
