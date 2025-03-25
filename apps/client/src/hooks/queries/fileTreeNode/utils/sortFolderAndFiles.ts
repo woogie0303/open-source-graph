@@ -2,12 +2,14 @@ import { ResponseFileTreeNode } from "@/apis/request/fileTree";
 
 function sortFoldersAndFiles(data: ResponseFileTreeNode[]) {
   // 문자열 날짜를 Date 객체로 변환
-  const treeData = [...data];
+  const deepCopyTreeData: ResponseFileTreeNode[] = JSON.parse(
+    JSON.stringify(data),
+  );
 
   const parseDate = (createdAt: string) => new Date(createdAt).getTime();
 
   // 폴더는 항상 파일보다 먼저, 같은 타입이면 생성 순서대로 정렬
-  treeData.sort((a, b) => {
+  deepCopyTreeData.sort((a, b) => {
     const isAFolder = Array.isArray(a.children);
     const isBFolder = Array.isArray(b.children);
 
@@ -17,13 +19,13 @@ function sortFoldersAndFiles(data: ResponseFileTreeNode[]) {
   });
 
   // 폴더 내부의 children도 정렬 적용
-  treeData.forEach((item) => {
+  deepCopyTreeData.forEach((item) => {
     if (Array.isArray(item.children)) {
       item.children = sortFoldersAndFiles(item.children);
     }
   });
 
-  return treeData;
+  return deepCopyTreeData;
 }
 
 export default sortFoldersAndFiles;

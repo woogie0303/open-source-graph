@@ -8,9 +8,7 @@ export const useRequestGetFileTreeNode = () => {
     queryKey: [QUERY_KEYS.fileTree],
     queryFn: () => requestGetFileTreeNode(),
     select: (data) => {
-      sortFoldersAndFiles(data);
-
-      return data;
+      return sortFoldersAndFiles(data);
     },
   });
 
