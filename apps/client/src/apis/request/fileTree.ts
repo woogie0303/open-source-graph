@@ -3,6 +3,7 @@ import { fetcher } from "../fetcher";
 export type ResponseFileTreeNode = {
   id: string;
   name: string;
+  createdAt: string;
   children?: ResponseFileTreeNode[];
 };
 

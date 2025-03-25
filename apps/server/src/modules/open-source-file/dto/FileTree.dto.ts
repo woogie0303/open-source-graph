@@ -1,4 +1,4 @@
-import { Expose, Type } from 'class-transformer';
+import { Expose, Transform, Type } from 'class-transformer';
 import { IsString } from 'class-validator';
 
 export class FileTreeDto {
@@ -13,4 +13,8 @@ export class FileTreeDto {
   @Type(() => FileTreeDto)
   @Expose()
   children?: FileTreeDto[];
+
+  @Transform(({ value }) => value.toString())
+  @Expose()
+  createdAt: string;
 }

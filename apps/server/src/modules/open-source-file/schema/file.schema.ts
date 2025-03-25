@@ -30,6 +30,8 @@ export class File {
   @Prop({ required: true })
   @Expose()
   isFolder: boolean;
+
+  createdAt: Date;
 }
 
 export type FileDocument = HydratedDocument<File>;

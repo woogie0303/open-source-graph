@@ -32,11 +32,13 @@ export class FileService {
         fileMap.set(file._id.toString(), {
           id: file._id.toString(),
           name: file.name,
+          createdAt: file.createdAt,
           children: [],
         });
       } else {
         fileMap.set(file._id.toString(), {
           id: file._id.toString(),
+          createdAt: file.createdAt,
           name: file.name,
         });
       }
