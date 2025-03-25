@@ -1,4 +1,5 @@
-import { IsBoolean, IsString } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsBoolean, IsNumber, IsString } from 'class-validator';
 import { Types } from 'mongoose';
 import { TransformValidationObjectId } from 'src/common/decorator/Expose.decorator';
 
@@ -11,4 +12,8 @@ export class CreateFileDto {
 
   @IsBoolean()
   isFolder: boolean;
+
+  @Transform(({ value }) => Number(value))
+  @IsNumber()
+  index: number;
 }

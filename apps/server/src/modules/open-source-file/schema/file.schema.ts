@@ -9,7 +9,7 @@ export class File {
   @Expose()
   id: Types.ObjectId;
 
-  @Prop({ required: true })
+  @Prop({ type: String, default: '' })
   @Expose()
   name: string;
 
@@ -22,6 +22,9 @@ export class File {
   @Prop({ required: true })
   @Exclude()
   userId: string;
+
+  @Prop({ required: true })
+  index: number;
 
   @Prop({ required: true })
   @Expose()

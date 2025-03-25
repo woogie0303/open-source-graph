@@ -20,7 +20,7 @@ export class FileController {
     return this.fileService.getUserFiles('sdf');
   }
 
-  @Post('/')
+  @Post('')
   createFile(@Body() fileData: CreateFileDto) {
     return this.fileService.createFile({
       userId: 'sdf',

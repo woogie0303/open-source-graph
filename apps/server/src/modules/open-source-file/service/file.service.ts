@@ -29,11 +29,13 @@ export class FileService {
         fileMap.set(file._id.toString(), {
           id: file._id.toString(),
           name: file.name,
+          index: file.index,
           children: [],
         });
       } else {
         fileMap.set(file._id.toString(), {
           id: file._id.toString(),
+          index: file.index,
           name: file.name,
         });
       }
@@ -47,7 +49,7 @@ export class FileService {
         const parentId = file.parentId._id.toString();
         const parent = fileMap.get(parentId);
 
-        if (parent.children) parent.children.push(fileNode);
+        if (parent.children) parent.children[fileNode.index] = fileNode;
       } else {
         tree.push(fileNode);
       }
@@ -66,6 +68,7 @@ export class FileService {
   }) {
     return this.fileRepository.create({
       name: fileData.name,
+      index: fileData.index,
       parentId: fileData.parentId,
       isFolder: fileData.isFolder,
       userId,
