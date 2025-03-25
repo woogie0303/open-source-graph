@@ -1,18 +1,21 @@
+import { ResponseFileTreeNode } from "@/apis/request/fileTree";
 import { useRequestCreateFileTreeNode } from "@/hooks/queries/fileTreeNode/useRequestCreateFileTreeNode";
+import { useRequestDeleteFileTreeNode } from "@/hooks/queries/fileTreeNode/useRequestDeleteFileTreeNode";
+import { useRequestGetFileTreeNode } from "@/hooks/queries/fileTreeNode/useRequestGetFileTreeNode";
 import { useRequestUpdateFileTreeNodeName } from "@/hooks/queries/fileTreeNode/useRequestUpdateFileTreeNodeName";
 import { FilePlus, FolderPlus } from "lucide-react";
 import { useRef } from "react";
-import { Tree, TreeApi, useSimpleTree } from "react-arborist";
+import { Tree, TreeApi } from "react-arborist";
 import useResizeObserver from "use-resize-observer";
 import FileNode from "./FileNode";
-import { data, DataType } from "./mockData";
 
 const Arborist = () => {
-  const treeRef = useRef<TreeApi<DataType>>(null);
+  const treeRef = useRef<TreeApi<ResponseFileTreeNode>>(null);
   const { ref, width, height } = useResizeObserver();
-  const [fileTreeData, controller] = useSimpleTree(data);
   const { createFileTreeNode } = useRequestCreateFileTreeNode();
   const { updateFileTreeNodeName } = useRequestUpdateFileTreeNodeName();
+  const { deleteFileTreeNode } = useRequestDeleteFileTreeNode();
+  const { fileTreeNode } = useRequestGetFileTreeNode();
 
   return (
     <div className="h-inherit flex flex-col border-r bg-background border-slate-200 w-[300px] p-5">
@@ -31,33 +34,27 @@ const Arborist = () => {
       <div ref={ref} className="h-full">
         <Tree
           ref={treeRef}
-          data={fileTreeData}
+          data={fileTreeNode}
           width={width}
           height={height}
           rowHeight={40}
-          {...controller}
           onRename={(node) => {
-            // TODO: find 조회해보기
             updateFileTreeNodeName({ id: node.id, newName: node.name });
-            controller.onRename(node);
           }}
           onDelete={(node) => {
-            controller.onDelete(node);
+            deleteFileTreeNode({ id: node.ids[0] });
           }}
           onCreate={async (node) => {
             const newNodeId = await createFileTreeNode({
               name: "",
               parentId: node.parentId,
-              index: node.index,
               isFolder: node.type === "internal" ? true : false,
             });
-            console.log(newNodeId);
-            return null;
+
+            treeRef.current?.edit(newNodeId);
+            return newNodeId;
           }}
-          onMove={(node) => {
-            console.log(node);
-            controller.onMove(node);
-          }}
+          onMove={() => {}}
         >
           {FileNode}
         </Tree>
