@@ -1,4 +1,4 @@
-import AddFunctionNodeDialog from "../NetworkGraph/AddFunctionNodeDialog";
+import AddFunctionNodeDialog from "../FunctionNodeNetworkGraph/AddFunctionNodeDialog";
 
 export default function Navbar() {
   return (

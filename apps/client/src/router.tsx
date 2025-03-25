@@ -1,7 +1,7 @@
 import FunctionNodePage from "@/pages/functionNodePage/FunctionNodePage";
 import { createBrowserRouter } from "react-router";
 import App from "./App";
-import FunctionNodeNetworkGraph from "./components/NetworkGraph/FunctionNodeNetworkGraph";
+import { FunctionNodeNetworkGraph } from "./components/FunctionNodeNetworkGraph";
 
 export const router = createBrowserRouter([
   {

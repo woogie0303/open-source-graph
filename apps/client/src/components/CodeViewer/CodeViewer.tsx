@@ -3,7 +3,7 @@ import { tags as t } from "@lezer/highlight";
 import { createTheme } from "@uiw/codemirror-themes";
 import CodeMirror from "@uiw/react-codemirror";
 import { useEffect, useRef, useState } from "react";
-import { parseCodeFromStartLine } from "../NetworkGraph/utils/parseCodeFromStartLine";
+import { parseCodeFromStartLine } from "../FunctionNodeNetworkGraph/utils/parseCodeFromStartLine";
 
 const customTheme = createTheme({
   theme: "light",

@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { NodeInform } from "../NodeInform";
+
+import FunctionNodeInform from "./FunctionNodeInform";
 import NetworkGraph from "./NetworkGraph";
 
 const sampleData = {
@@ -56,7 +57,7 @@ export default function FunctionNodeNetworkGraph() {
           setActiveNode(true);
         }}
       />
-      {activeNode && <NodeInform />}
+      {activeNode && <FunctionNodeInform />}
     </>
   );
 }
