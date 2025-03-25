@@ -2,7 +2,15 @@ import { fetcher } from "../fetcher";
 
 export type RequestCreateFileTreeNode = {
   name: string;
-  parentId: string;
+  parentId: string | null;
+  index: number;
+  isFolder: boolean;
+};
+
+export type ResponseCreateFileTreeNode = {
+  id: string;
+  name: string;
+  parentId: string | null;
   isFolder: boolean;
 };
 
@@ -10,10 +18,11 @@ export const requestCreateFileTreeNode = async ({
   name,
   parentId,
   isFolder,
+  index,
 }: RequestCreateFileTreeNode) => {
-  const data = await fetcher.postWithResponse({
+  const data = await fetcher.postWithResponse<ResponseCreateFileTreeNode>({
     path: "/file",
-    body: { name, parentId, isFolder },
+    body: { name, parentId, isFolder, index },
   });
 
   return data;

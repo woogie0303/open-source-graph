@@ -1,3 +1,5 @@
+import { useRequestCreateFileTreeNode } from "@/hooks/queries/fileTreeNode/useRequestCreateFileTreeNode";
+import { useRequestUpdateFileTreeNodeName } from "@/hooks/queries/fileTreeNode/useRequestUpdateFileTreeNodeName";
 import { FilePlus, FolderPlus } from "lucide-react";
 import { useRef } from "react";
 import { Tree, TreeApi, useSimpleTree } from "react-arborist";
@@ -9,6 +11,8 @@ const Arborist = () => {
   const treeRef = useRef<TreeApi<DataType>>(null);
   const { ref, width, height } = useResizeObserver();
   const [fileTreeData, controller] = useSimpleTree(data);
+  const { createFileTreeNode } = useRequestCreateFileTreeNode();
+  const { updateFileTreeNodeName } = useRequestUpdateFileTreeNodeName();
 
   return (
     <div className="h-inherit flex flex-col border-r bg-background border-slate-200 w-[300px] p-5">
@@ -32,7 +36,26 @@ const Arborist = () => {
           height={height}
           rowHeight={40}
           {...controller}
+          onRename={(node) => {
+            // TODO: find 조회해보기
+            updateFileTreeNodeName({ id: node.id, newName: node.name });
+            controller.onRename(node);
+          }}
+          onDelete={(node) => {
+            controller.onDelete(node);
+          }}
+          onCreate={async (node) => {
+            const newNodeId = await createFileTreeNode({
+              name: "",
+              parentId: node.parentId,
+              index: node.index,
+              isFolder: node.type === "internal" ? true : false,
+            });
+            console.log(newNodeId);
+            return null;
+          }}
           onMove={(node) => {
+            console.log(node);
             controller.onMove(node);
           }}
         >

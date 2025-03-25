@@ -5,10 +5,15 @@ import {
 import { useMutation } from "@tanstack/react-query";
 
 export const useRequestCreateFileTreeNode = () => {
-  const { mutate, ...rest } = useMutation({
-    mutationFn: ({ name, parentId, isFolder }: RequestCreateFileTreeNode) =>
-      requestCreateFileTreeNode({ name, parentId, isFolder }),
+  const { mutateAsync, ...rest } = useMutation({
+    mutationFn: ({
+      name,
+      parentId,
+      isFolder,
+      index,
+    }: RequestCreateFileTreeNode) =>
+      requestCreateFileTreeNode({ name, parentId, isFolder, index }),
   });
 
-  return { createFileTreeNode: mutate, ...rest };
+  return { createFileTreeNode: mutateAsync, ...rest };
 };
