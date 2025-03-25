@@ -33,12 +33,13 @@ export const TransformObjectIdToString =
         // string값 체크 이유는 repository의 find메서드에 lean을 사용했기 때문
         case typeof value === 'string':
           return value;
-        case !value:
-          return obj._id.toString();
+        // parentId가 null일 경우
+        case !value && propertyKey !== 'id':
+          return value;
         case Array.isArray(value):
           return value.map((el) => el._id.toString());
         default:
-          return value._id.toString();
+          return obj._id.toString();
       }
     }, options)(target, propertyKey);
   };
