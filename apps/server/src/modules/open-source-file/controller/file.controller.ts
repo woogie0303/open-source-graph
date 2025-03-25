@@ -38,10 +38,10 @@ export class FileController {
   }
 
   @Delete('')
-  deleteFile(
+  async deleteFile(
     @Query()
     deleteFileDto: DeleteFileDto,
   ) {
-    this.fileService.deleteFile(deleteFileDto);
+    await this.fileService.deleteFile(deleteFileDto);
   }
 }

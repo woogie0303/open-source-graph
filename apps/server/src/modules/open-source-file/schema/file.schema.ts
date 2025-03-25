@@ -24,6 +24,10 @@ export class File {
   userId: string;
 
   @Prop({ required: true })
+  @Exclude()
+  isDeleted: boolean;
+
+  @Prop({ required: true })
   @Expose()
   isFolder: boolean;
 }

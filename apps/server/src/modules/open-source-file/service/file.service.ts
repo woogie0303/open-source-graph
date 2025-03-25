@@ -23,8 +23,11 @@ export class FileService {
   private buildFileTree(files: FileDocument[]) {
     const fileMap = new Map<string, FileTreeType>();
     const tree: FileTreeType[] = [];
+    const fileTreeWithoutDelete = files.filter((file) => !file.isDeleted);
 
-    files.forEach((file) => {
+    if (fileTreeWithoutDelete.length === 0) return [];
+
+    fileTreeWithoutDelete.forEach((file) => {
       if (file.isFolder) {
         fileMap.set(file._id.toString(), {
           id: file._id.toString(),
@@ -39,7 +42,7 @@ export class FileService {
       }
     });
 
-    files.forEach((file) => {
+    fileTreeWithoutDelete.forEach((file) => {
       const fileId = file._id.toString();
       const fileNode = fileMap.get(fileId);
 
@@ -68,6 +71,7 @@ export class FileService {
       name: fileData.name,
       parentId: fileData.parentId,
       isFolder: fileData.isFolder,
+      isDeleted: false,
       userId,
     });
   }
@@ -84,21 +88,27 @@ export class FileService {
   async deleteFile(deleteFileDto: DeleteFileDto) {
     const file = await this.fileRepository.findOne({ _id: deleteFileDto.id });
     if (file.isFolder) {
-      this.recursiveDeleteChildFile(deleteFileDto.id);
+      await this.recursiveDeleteChildFile(deleteFileDto.id);
     } else {
-      this.fileRepository.deleteOne({ _id: deleteFileDto.id });
+      await this.fileRepository.findOneAndUpdate(
+        { _id: deleteFileDto.id },
+        { isDeleted: true },
+      );
     }
   }
 
   async recursiveDeleteChildFile(fileId: Types.ObjectId) {
-    await this.fileRepository.deleteOne({ _id: fileId });
+    await this.fileRepository.findOneAndUpdate(
+      { _id: fileId },
+      { isDeleted: true },
+    );
 
     const childrenFile = await this.fileRepository.find({ parentId: fileId });
 
     if (childrenFile.length === 0) return;
 
-    childrenFile.forEach((childFile) => {
-      this.recursiveDeleteChildFile(childFile._id);
-    });
+    childrenFile.map((childFile) =>
+      this.recursiveDeleteChildFile(childFile._id),
+    );
   }
 }
