@@ -1,8 +1,8 @@
+import { ResponseFileTreeNode } from "@/apis/request/fileTree";
 import cn from "@/utils/cn";
 import { Edit, File, Folder, X } from "lucide-react";
 import { JSX } from "react";
 import { NodeRendererProps } from "react-arborist";
-import { DataType } from "./mockData";
 
 function NodeLabel({
   icon,
@@ -61,7 +61,7 @@ function FileNode({
   dragHandle,
   tree,
   style,
-}: NodeRendererProps<DataType>) {
+}: NodeRendererProps<ResponseFileTreeNode>) {
   const nodeLabelKeyDownHandler = (
     e: React.KeyboardEvent<HTMLInputElement>,
   ) => {
