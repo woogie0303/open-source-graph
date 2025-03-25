@@ -1,5 +1,19 @@
 import { fetcher } from "../fetcher";
 
+type ResponseFileTreeNode = {
+  id: string;
+  name: string;
+  children?: ResponseFileTreeNode[];
+};
+
+export const requestGetFileTreeNode = async () => {
+  const data = await fetcher.get<ResponseFileTreeNode>({
+    path: "/file/all",
+  });
+
+  return data;
+};
+
 export type RequestCreateFileTreeNode = {
   name: string;
   parentId: string | null;
