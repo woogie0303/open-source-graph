@@ -1,9 +1,11 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useState } from "react";
 import { FileTree } from "./components/FileTree";
 import { Navbar } from "./components/Navbar";
 import { NetworkGraph } from "./components/NetworkGraph";
 import { NodeInform } from "./components/NodeInform";
+
 import "./index.css";
 
 const sampleData = {
@@ -49,7 +51,13 @@ const sampleData = {
   ],
 };
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 20,
+    },
+  },
+});
 
 function App() {
   const [activeNode, setActiveNode] = useState(false);
@@ -68,6 +76,7 @@ function App() {
           {activeNode && <NodeInform />}
         </div>
       </div>
+      <ReactQueryDevtools initialIsOpen={true} />
     </QueryClientProvider>
   );
 }
