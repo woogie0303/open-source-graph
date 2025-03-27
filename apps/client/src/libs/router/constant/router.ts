@@ -1,8 +1,4 @@
-type RouterConfigType = {
-  [key: string]: { path: string; query?: string | object };
-};
-
-export const RouterConfig: RouterConfigType = {
+export const RouterConfig = {
   root: { path: "/" },
 
   functionNode: {
@@ -15,12 +11,15 @@ export const RouterConfig: RouterConfigType = {
 
 export const RouterPathConfig = Object.fromEntries(
   Object.entries(RouterConfig).map(([key, value]) => [key, value.path]),
-);
+) as Record<
+  keyof typeof RouterConfig,
+  (typeof RouterConfig)[keyof typeof RouterConfig]["path"]
+>;
 
 export const RouterQueryConfig = Object.fromEntries(
-  Object.entries(RouterConfig).flatMap(([key, value]) => {
-    if (value.query) {
-      return [[key, value.query]];
+  Object.entries(RouterConfig).flatMap(([, value]) => {
+    if ("query" in value) {
+      return [[value.path, value.query]];
     }
     return [];
   }),
