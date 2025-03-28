@@ -2,13 +2,14 @@ import { requestGetGithubCode } from "@/apis/request/functionNode";
 import { Dialog } from "@/components/common/Dialog";
 import { useRequestCreateFunctionNode } from "@/hooks/queries/functionNode/useRequestCreateFunctionNode";
 import { GitFork, TriangleAlert, X } from "lucide-react";
-import { FormEventHandler, useRef } from "react";
+import { ComponentRef, FormEventHandler, useRef } from "react";
 import { parseCodeFromStartLine } from "./utils/parseCodeFromStartLine";
 
 export default function AddFunctionNodeDialog() {
   const { createFunctionNode } = useRequestCreateFunctionNode();
   const functionNodeUrlRef = useRef<HTMLInputElement>(null);
   const functionNodeTitleRef = useRef<HTMLInputElement>(null);
+  const closeButtonRef = useRef<ComponentRef<"button">>(null);
 
   const createFunctionNodeSubmitHandler: FormEventHandler<
     HTMLFormElement
@@ -33,6 +34,8 @@ export default function AddFunctionNodeDialog() {
         name: functionNodeTitleRef.current.value,
         connection: [],
       });
+
+      closeButtonRef.current?.click();
     }
   };
   return (
@@ -52,7 +55,10 @@ export default function AddFunctionNodeDialog() {
             <h3 className="text-lg font-medium text-slate-900">
               새 함수 노드 추가
             </h3>
-            <Dialog.Close className="text-slate-400 hover:text-slate-500 transition-colors">
+            <Dialog.Close
+              ref={closeButtonRef}
+              className="text-slate-400 hover:text-slate-500 transition-colors"
+            >
               <X className="h-5 w-5" />
             </Dialog.Close>
           </div>
