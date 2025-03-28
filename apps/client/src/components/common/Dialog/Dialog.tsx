@@ -1,6 +1,7 @@
 import useControllableState from "@/hooks/useControllableState/useControllableState";
 import { PropsWithChildren, useId } from "react";
 import { DialogContext } from "./context";
+import DialogClose from "./DialogClose";
 import DialogContent from "./DialogContent";
 import DialogTrigger from "./DialogTrigger";
 
@@ -39,6 +40,7 @@ DialogRoot.displayName = "Dialog";
 const Dialog = Object.assign(DialogRoot, {
   Content: DialogContent,
   Trigger: DialogTrigger,
+  Close: DialogClose,
 });
 
 export default Dialog;

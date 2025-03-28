@@ -52,9 +52,9 @@ export default function AddFunctionNodeDialog() {
             <h3 className="text-lg font-medium text-slate-900">
               새 함수 노드 추가
             </h3>
-            <button className="text-slate-400 hover:text-slate-500 transition-colors">
+            <Dialog.Close className="text-slate-400 hover:text-slate-500 transition-colors">
               <X className="h-5 w-5" />
-            </button>
+            </Dialog.Close>
           </div>
           <div className="p-6">
             <form
