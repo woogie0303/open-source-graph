@@ -1,1 +1,1 @@
-export { default as CodeViewer } from "./CodeViewer";
+export { default as CodeViewer } from "./FunctionNodeCodeViewer";

@@ -1,5 +1,5 @@
 import { Code, Notebook, X } from "lucide-react";
-import CodeViewer from "../CodeViewer/CodeViewer";
+import CodeViewer from "../CodeViewer/FunctionNodeCodeViewer";
 import { Tabs } from "../common/Tabs";
 import TabsContent from "../common/Tabs/TabsContent";
 import TabsTrigger from "../common/Tabs/TabsTrigger";
