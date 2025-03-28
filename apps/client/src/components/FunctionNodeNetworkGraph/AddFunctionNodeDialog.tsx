@@ -3,10 +3,12 @@ import { Dialog } from "@/components/common/Dialog";
 import { useRequestCreateFunctionNode } from "@/hooks/queries/functionNode/useRequestCreateFunctionNode";
 import { GitFork, TriangleAlert, X } from "lucide-react";
 import { ComponentRef, FormEventHandler, useRef } from "react";
+import { useParams } from "react-router";
 import { parseCodeFromStartLine } from "./utils/parseCodeFromStartLine";
 
 export default function AddFunctionNodeDialog() {
   const { createFunctionNode } = useRequestCreateFunctionNode();
+  const param = useParams();
   const functionNodeUrlRef = useRef<HTMLInputElement>(null);
   const functionNodeTitleRef = useRef<HTMLInputElement>(null);
   const closeButtonRef = useRef<ComponentRef<"button">>(null);
@@ -29,7 +31,7 @@ export default function AddFunctionNodeDialog() {
       });
 
       createFunctionNode({
-        fileId: "67db86af30debd30c8953cc0",
+        fileId: param.fileId as string,
         codeText,
         name: functionNodeTitleRef.current.value,
         connection: [],

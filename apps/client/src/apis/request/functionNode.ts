@@ -34,3 +34,23 @@ export const requestGetGithubCode = async (path: string) => {
     startLine: parseGithubUrl.startLine,
   };
 };
+
+export type ResponseGetFunctionNode = {
+  id: string;
+  name: string;
+  codeText: string;
+  fileId: string;
+  connection: string[];
+  editorBlock: object[];
+};
+export const requestGetFunctionNode = async ({
+  nodeId,
+}: {
+  nodeId: string;
+}) => {
+  const data = await fetcher.get({
+    path: `/function-nodes/node/?id=${nodeId}`,
+  });
+
+  return data;
+};
