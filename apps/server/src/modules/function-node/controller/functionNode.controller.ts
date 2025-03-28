@@ -12,6 +12,7 @@ import {
   CreateFunctionNodeDto,
   UpdateEditorBlockDto,
 } from '../dto/functionNode.dto';
+import { GetFunctionNodeDto } from '../dto/GetFunctionNode.dto';
 import { FunctionNodeService } from '../service/functionNode.service';
 
 @Controller('function-nodes')
@@ -24,6 +25,14 @@ export class FunctionNodeController {
     fileId: string,
   ) {
     return this.functionNodeService.getAllFunctionNodes(fileId);
+  }
+
+  @Get('/node')
+  getFunctionNode(
+    @Query()
+    node: GetFunctionNodeDto,
+  ) {
+    return this.functionNodeService.getFunctionNode(node.id);
   }
 
   @Post()
