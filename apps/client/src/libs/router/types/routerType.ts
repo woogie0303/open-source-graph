@@ -12,3 +12,13 @@ export type RouterParams<T extends string> =
           [K in Param]: string;
         }
       : never;
+
+export type RouterOption<T extends RouterPath> = [RouterParams<T>] extends [
+  never,
+]
+  ? { hash?: string; search?: string } | undefined
+  : {
+      search?: string;
+      hash?: string;
+      params: RouterParams<T>;
+    };
