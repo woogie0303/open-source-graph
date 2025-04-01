@@ -4,7 +4,7 @@ const useClickOutside = ({
   elementRef,
   callback,
 }: {
-  elementRef: RefObject<Element>;
+  elementRef: RefObject<Element | null>;
   callback: () => void;
 }) => {
   const updatableCallbackRef = useRef<() => void>(null);
@@ -13,6 +13,7 @@ const useClickOutside = ({
   const handleClickOutside = useCallback(
     (e: MouseEvent) => {
       if (
+        elementRef &&
         !elementRef.current?.contains(e.target as Element) &&
         updatableCallbackRef.current
       ) {
