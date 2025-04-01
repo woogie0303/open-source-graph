@@ -15,6 +15,7 @@ export default function AddFunctionNodeDialog() {
   const functionNodeUrlRef = useRef<HTMLInputElement>(null);
   const functionNodeTitleRef = useRef<HTMLInputElement>(null);
   const closeButtonRef = useRef<ComponentRef<"button">>(null);
+  const connectionRef = useRef<string[]>([]);
 
   const createFunctionNodeSubmitHandler: FormEventHandler<
     HTMLFormElement
@@ -37,7 +38,7 @@ export default function AddFunctionNodeDialog() {
         fileId: param.fileId as string,
         codeText,
         name: functionNodeTitleRef.current.value,
-        connection: [],
+        connection: connectionRef.current,
       });
 
       closeButtonRef.current?.click();
@@ -124,7 +125,7 @@ export default function AddFunctionNodeDialog() {
                       name: el.name,
                     }))}
                     onMultiSelectValueChange={(value) => {
-                      console.log(value);
+                      connectionRef.current = value.map((el) => el.id);
                     }}
                   />
                 )}

@@ -5,12 +5,25 @@ import TabsContent from "../common/Tabs/TabsContent";
 import TabsTrigger from "../common/Tabs/TabsTrigger";
 import { TextEditorBox } from "../TextEditorBox";
 
-export default function FunctionNodeInform() {
+export default function FunctionNodeInform({
+  activeNode,
+  onClose,
+}: {
+  activeNode: {
+    codeText: string;
+    editorBlock: object[];
+  };
+  onClose: () => void;
+}) {
   return (
     <div className="px-4 py-8 overflow-y-scroll basis-5/6 h-inherit border-l border-slate-200 shadow-lg transform transition-transform duration-300 ease-in-out z-10">
       <div className="text-xl font-medium text-slate-900 mb-8 flex justify-between">
         RenderPhase{" "}
-        <button onClick={() => {}}>
+        <button
+          onClick={() => {
+            onClose();
+          }}
+        >
           <X />
         </button>
       </div>
@@ -31,7 +44,7 @@ export default function FunctionNodeInform() {
           </TabsTrigger>
         </div>
         <TabsContent value="code">
-          <CodeViewer />
+          <CodeViewer initialValue={activeNode.codeText} />
         </TabsContent>
         <TabsContent value="memo">
           <TextEditorBox />

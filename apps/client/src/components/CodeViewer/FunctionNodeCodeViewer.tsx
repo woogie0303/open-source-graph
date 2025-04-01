@@ -2,8 +2,7 @@ import { javascript } from "@codemirror/lang-javascript";
 import { tags as t } from "@lezer/highlight";
 import { createTheme } from "@uiw/codemirror-themes";
 import CodeMirror from "@uiw/react-codemirror";
-import { useEffect, useRef, useState } from "react";
-import { parseCodeFromStartLine } from "../FunctionNodeNetworkGraph/utils/parseCodeFromStartLine";
+import { useRef } from "react";
 
 const customTheme = createTheme({
   theme: "light",
@@ -38,22 +37,9 @@ const customTheme = createTheme({
   ],
 });
 
-export default function CodeViewer() {
-  const [code, setCode] = useState("");
-  const targetLine = 144;
+export default function CodeViewer({ initialValue }: { initialValue: string }) {
   const divRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const rawUrl =
-      "https://raw.githubusercontent.com/facebook/react/main/packages/react-reconciler/src/ReactFiberCommitEffects.js";
 
-    fetch(rawUrl)
-      .then((response) => response.text())
-      .then((text) => {
-        setCode(
-          parseCodeFromStartLine({ code: text, startLine: targetLine - 1 }),
-        );
-      });
-  }, []);
   return (
     <>
       <div
@@ -61,7 +47,7 @@ export default function CodeViewer() {
         className=" overflow-auto rounded-lg border border-slate-200"
       >
         <CodeMirror
-          value={code}
+          value={initialValue}
           extensions={[javascript({ jsx: true })]} // JavaScript + JSX 지원으로 변경
           theme={customTheme}
           readOnly
