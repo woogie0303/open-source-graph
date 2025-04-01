@@ -12,13 +12,14 @@ import { FunctionNode } from "./types/nodeType";
 const NetworkGraph = ({
   data,
   onNodeClick,
+  activeNode,
 }: {
   data: FunctionNode[];
-  onNodeClick: (activeNodeId: string) => void;
+  activeNode: { id: string; x: number; y: number } | null;
+  onNodeClick: (activeNodeId: { id: string; x: number; y: number }) => void;
 }) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-  const [activeZoomNode, setActiveZoomNode] = useState<FunctionNode>();
 
   useEffect(() => {
     if (!svgRef.current) return;
@@ -53,8 +54,7 @@ const NetworkGraph = ({
       data,
       nodeWrapper,
       onNodeClick: (el) => {
-        onNodeClick(el.id);
-        setActiveZoomNode(el);
+        if (el.x && el.y) onNodeClick({ id: el.id, x: el.x, y: el.y });
       },
     });
     const stopSimulation = initD3Simulation({
@@ -93,50 +93,44 @@ const NetworkGraph = ({
     });
 
     return stopSimulation;
-  }, [dimensions, data, onNodeClick, setActiveZoomNode]);
-
-  useEffect(() => {
-    if (!svgRef.current || !activeZoomNode) return;
-
-    const zoom = initD3Zoom({
-      nodeWrapper: d3.select(svgRef.current).select("g"),
-    });
-
-    d3.select(svgRef.current)
-      .call(zoom as any)
-      .on("dblclick.zoom", null);
-
-    if (!activeZoomNode.x || !activeZoomNode.y) return;
-
-    const { width, height } = svgRef.current.getBoundingClientRect();
-    const scale = 2;
-    const newX = width / 2 - scale * activeZoomNode.x;
-    const newY = height / 2 - scale * activeZoomNode.y;
-
-    d3.select(svgRef.current)
-      .transition()
-      .duration(750)
-      .call(
-        zoom.transform as any,
-        d3.zoomIdentity.translate(newX, newY).scale(scale),
-      );
-  }, [activeZoomNode]);
+  }, [dimensions, data, onNodeClick]);
 
   useEffect(() => {
     if (!svgRef.current) return;
+    const updatableSvg = svgRef.current;
+    const gElement = d3.select(updatableSvg).select("g");
 
-    setTimeout(() => {
-      const gElement = d3.select(svgRef.current).select("g");
-      console.log(gElement);
-      if (!gElement.empty()) {
-        const zoom = initD3Zoom({ nodeWrapper: gElement });
+    if (gElement.empty()) return;
 
-        d3.select(svgRef.current)
-          .call(zoom as any)
-          .on("dblclick.zoom", null);
-      }
-    }, 100);
-  }, [svgRef]);
+    // ✅ 항상 줌 기능 적용
+    const zoom = initD3Zoom({ nodeWrapper: gElement });
+
+    d3.select(updatableSvg)
+      .call(zoom as any)
+      .on("dblclick.zoom", null);
+
+    // ✅ activeNode가 있을 때만 줌 이동 실행
+    if (activeNode?.x !== undefined && activeNode?.y !== undefined) {
+      const { width, height } = updatableSvg.getBoundingClientRect();
+      const scale = 2;
+      const newX = width / 2 - scale * activeNode.x;
+      const newY = height / 2 - scale * activeNode.y;
+
+      d3.select(updatableSvg)
+        .transition()
+        .duration(750)
+        .call(
+          zoom.transform as any,
+          d3.zoomIdentity.translate(newX, newY).scale(scale),
+        );
+    }
+    return () => {
+      d3.select(updatableSvg)
+        .transition()
+        .duration(750)
+        .call(zoom.transform as any, d3.zoomIdentity.translate(0, 0));
+    };
+  });
 
   return <svg ref={svgRef} className="w-full h-inherit"></svg>;
 };
