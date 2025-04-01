@@ -96,14 +96,19 @@ const NetworkGraph = ({
   }, [dimensions, data, onNodeClick, setActiveZoomNode]);
 
   useEffect(() => {
+    if (!svgRef.current || !activeZoomNode) return;
+
     const zoom = initD3Zoom({
       nodeWrapper: d3.select(svgRef.current).select("g"),
     });
 
-    if (!svgRef.current || !activeZoomNode) return;
-    if (!activeZoomNode.x || !activeZoomNode.y) return;
-    const { width, height } = svgRef.current.getBoundingClientRect();
+    d3.select(svgRef.current)
+      .call(zoom as any)
+      .on("dblclick.zoom", null);
 
+    if (!activeZoomNode.x || !activeZoomNode.y) return;
+
+    const { width, height } = svgRef.current.getBoundingClientRect();
     const scale = 2;
     const newX = width / 2 - scale * activeZoomNode.x;
     const newY = height / 2 - scale * activeZoomNode.y;
@@ -115,10 +120,23 @@ const NetworkGraph = ({
         zoom.transform as any,
         d3.zoomIdentity.translate(newX, newY).scale(scale),
       );
-    d3.select(svgRef.current)
-      .call(zoom as any)
-      .on("dblclick.zoom", null);
   }, [activeZoomNode]);
+
+  useEffect(() => {
+    if (!svgRef.current) return;
+
+    setTimeout(() => {
+      const gElement = d3.select(svgRef.current).select("g");
+      console.log(gElement);
+      if (!gElement.empty()) {
+        const zoom = initD3Zoom({ nodeWrapper: gElement });
+
+        d3.select(svgRef.current)
+          .call(zoom as any)
+          .on("dblclick.zoom", null);
+      }
+    }, 100);
+  }, [svgRef]);
 
   return <svg ref={svgRef} className="w-full h-inherit"></svg>;
 };
