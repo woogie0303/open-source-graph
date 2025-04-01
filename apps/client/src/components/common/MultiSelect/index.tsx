@@ -2,21 +2,13 @@ import { useClickOutside } from "@/hooks/useClickOutside";
 import { ArrowRight, Check, ChevronDown } from "lucide-react";
 import { ComponentRef, useRef, useState } from "react";
 
-const options2 = [
-  { id: "Apple", name: "apple" },
-  { id: "Banana", name: "banana" },
-  { id: "Cherry", name: "cherry" },
-  { id: "Date", name: "date" },
-  { id: "Grape", name: "grape" },
-];
-
 function MultiSelect({
   selected,
   setSelected,
   onValueChange,
-  options = options2,
+  options,
 }: {
-  options: { id: string; name: string }[];
+  options?: { id: string; name: string }[];
   selected: { id: string; name: string }[];
   setSelected: React.Dispatch<
     React.SetStateAction<{ id: string; name: string }[]>
@@ -44,10 +36,13 @@ function MultiSelect({
   return (
     <div ref={elementRef} className="relative w-full">
       <button
-        onClick={() => setOpen(!open)}
+        onClick={(e) => {
+          e.preventDefault();
+          setOpen(!open);
+        }}
         className="w-full flex justify-between items-center border p-2 rounded-md bg-white shadow-sm"
       >
-        {selected.length > 0
+        {options && selected.length > 0
           ? selected.length > 3
             ? `${selected
                 .slice(0, 3)
@@ -58,9 +53,10 @@ function MultiSelect({
                 .map((opt) => opt.name)
                 .join(", ")
           : "Select options"}
+
         <ChevronDown className="ml-2 h-4 w-4" />
       </button>
-      {open && (
+      {open && options && (
         <div className="absolute mt-2 w-full bg-white border rounded-md shadow-md z-10">
           {options.map((option) => (
             <div
@@ -87,7 +83,7 @@ export default function DualSelect({
 }: {
   registerFunctionName: string;
   onMultiSelectValueChange: (value: { id: string; name: string }[]) => void;
-  options: { id: string; name: string }[];
+  options?: { id: string; name: string }[];
 }) {
   const [multiSelected, setMultiSelected] = useState<
     { id: string; name: string }[]
