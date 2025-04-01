@@ -1,7 +1,7 @@
 import { applyDecorators } from '@nestjs/common';
 import { ExposeOptions, Transform } from 'class-transformer';
-import { NotEquals } from 'class-validator';
-import mongoose, { Types } from 'mongoose';
+import { isArray, NotEquals } from 'class-validator';
+import mongoose, { isValidObjectId, Types } from 'mongoose';
 
 const failToConvertMongoId = 'mongoIdCheckFail';
 
@@ -30,14 +30,17 @@ export const TransformObjectIdToString =
   (options?: ExposeOptions) => (target, propertyKey) => {
     Transform(({ value, obj }) => {
       switch (true) {
+        case isValidObjectId(obj[propertyKey]?.toString()) &&
+          !isArray(obj[propertyKey]):
+          return obj[propertyKey].toString();
         // string값 체크 이유는 repository의 find메서드에 lean을 사용했기 때문
-        case typeof value === 'string':
+        case typeof obj[propertyKey] === 'string':
           return value;
         // parentId가 null일 경우
         case !value && propertyKey !== 'id':
           return value;
-        case Array.isArray(value):
-          return value.map((el) => el._id.toString());
+        case Array.isArray(obj[propertyKey]):
+          return obj[propertyKey].map((el) => el.toString());
         default:
           return obj._id.toString();
       }

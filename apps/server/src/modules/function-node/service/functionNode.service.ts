@@ -24,8 +24,6 @@ export class FunctionNodeService {
 
   @ReturnValueToDto(FunctionNode)
   async getFunctionNode(id: Types.ObjectId) {
-    console.log(1);
-
     return await this.functionNodeRepository.findOne({ _id: id });
   }
 
