@@ -1,13 +1,16 @@
 import { requestGetGithubCode } from "@/apis/request/functionNode";
 import { Dialog } from "@/components/common/Dialog";
 import { useRequestCreateFunctionNode } from "@/hooks/queries/functionNode/useRequestCreateFunctionNode";
+import { useRequestGetFunctionNodes } from "@/hooks/queries/functionNode/useRequestGetFunctionNodes";
 import { GitFork, TriangleAlert, X } from "lucide-react";
 import { ComponentRef, FormEventHandler, useRef } from "react";
 import { useParams } from "react-router";
+import DualSelect from "../common/MultiSelect";
 import { parseCodeFromStartLine } from "./utils/parseCodeFromStartLine";
 
 export default function AddFunctionNodeDialog() {
   const { createFunctionNode } = useRequestCreateFunctionNode();
+  const { functionNodes } = useRequestGetFunctionNodes();
   const param = useParams();
   const functionNodeUrlRef = useRef<HTMLInputElement>(null);
   const functionNodeTitleRef = useRef<HTMLInputElement>(null);
@@ -105,6 +108,26 @@ export default function AddFunctionNodeDialog() {
                   className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
                         focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 />
+              </div>
+              <div className="space-y-2">
+                <label
+                  htmlFor="function-title"
+                  className="block text-sm font-medium text-slate-700"
+                >
+                  함수 관계
+                </label>
+                {functionNodes && (
+                  <DualSelect
+                    registerFunctionName="sdfsd"
+                    options={functionNodes.map((el) => ({
+                      id: el.id,
+                      name: el.name,
+                    }))}
+                    onMultiSelectValueChange={(value) => {
+                      console.log(value);
+                    }}
+                  />
+                )}
               </div>
               <button
                 type="submit"
