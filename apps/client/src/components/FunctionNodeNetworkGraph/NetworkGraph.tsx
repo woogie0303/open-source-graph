@@ -14,7 +14,7 @@ const NetworkGraph = ({
   onNodeClick,
 }: {
   data: FunctionNode[];
-  onNodeClick: () => void;
+  onNodeClick: (activeNodeId: string) => void;
 }) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
@@ -53,7 +53,7 @@ const NetworkGraph = ({
       data,
       nodeWrapper,
       onNodeClick: (el) => {
-        onNodeClick();
+        onNodeClick(el.id);
         setActiveZoomNode(el);
       },
     });

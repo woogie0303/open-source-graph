@@ -1,63 +1,46 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
+import { useRequestGetFunctionNodes } from "@/hooks/queries/functionNode/useRequestGetFunctionNodes";
 import FunctionNodeInform from "./FunctionNodeInform";
 import NetworkGraph from "./NetworkGraph";
 
-const sampleData = {
-  files: [
-    {
-      name: "src",
-      children: [
-        {
-          name: "components",
-          children: [{ name: "Button.tsx" }, { name: "Input.tsx" }],
-        },
-        { name: "utils", children: [{ name: "helpers.ts" }] },
-        { name: "App.tsx" },
-      ],
-    },
-    { name: "package.json" },
-  ],
-  functions: [
-    {
-      id: "1",
-      name: "renderButton",
-      file: "src/components/Button.tsx",
-      connections: ["2"],
-    },
-    {
-      id: "2",
-      name: "handleClick",
-      file: "src/components/Button.tsx",
-      connections: ["3"],
-    },
-    {
-      id: "3",
-      name: "formatInput",
-      file: "src/components/Input.tsx",
-      connections: [],
-    },
-    {
-      id: "4",
-      name: "validateInput",
-      file: "src/utils/helpers.ts",
-      connections: ["3"],
-    },
-  ],
-};
-
 export default function FunctionNodeNetworkGraph() {
-  const [activeNode, setActiveNode] = useState(false);
+  const [activeNodeId, setActiveNodeId] = useState<string | null>(null);
+
+  const { functionNodes } = useRequestGetFunctionNodes();
+
+  const activeNode = useMemo(() => {
+    if (functionNodes) {
+      return functionNodes.find((el) => el.id === activeNodeId);
+    }
+  }, [activeNodeId, functionNodes]);
 
   return (
     <>
-      <NetworkGraph
-        data={sampleData.functions}
-        onNodeClick={() => {
-          setActiveNode(true);
-        }}
-      />
-      {activeNode && <FunctionNodeInform />}
+      {functionNodes && (
+        <NetworkGraph
+          data={functionNodes.map((el) => ({
+            id: el.id,
+            name: el.name,
+            file: el.fileId,
+            connections: el.connection,
+          }))}
+          onNodeClick={(activeNodeId: string) => {
+            setActiveNodeId(activeNodeId);
+          }}
+        />
+      )}
+      {activeNode && (
+        <FunctionNodeInform
+          activeNode={{
+            codeText: activeNode.codeText,
+            editorBlock: activeNode.editorBlock,
+          }}
+          onClose={() => {
+            setActiveNodeId(null);
+          }}
+        />
+      )}
     </>
   );
 }
