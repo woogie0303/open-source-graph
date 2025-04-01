@@ -54,3 +54,15 @@ export const requestGetFunctionNode = async ({
 
   return data;
 };
+
+export const requestGetFunctionNodes = async ({
+  fileId,
+}: {
+  fileId: string;
+}) => {
+  const data = await fetcher.get<ResponseGetFunctionNode[]>({
+    path: `/function-nodes/?fileId=${fileId}`,
+  });
+
+  return data;
+};
