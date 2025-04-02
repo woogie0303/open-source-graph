@@ -47,6 +47,7 @@ export default function FunctionNodeNetworkGraph() {
           activeNode={{
             codeText: activeNodeData.codeText,
             editorBlock: activeNodeData.editorBlock,
+            name: activeNodeData.name,
           }}
           onClose={() => {
             setActiveNode(null);

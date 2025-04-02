@@ -12,13 +12,14 @@ export default function FunctionNodeInform({
   activeNode: {
     codeText: string;
     editorBlock: object[];
+    name: string;
   };
   onClose: () => void;
 }) {
   return (
     <div className="px-4 py-8 overflow-y-scroll basis-5/6 h-inherit border-l border-slate-200 shadow-lg transform transition-transform duration-300 ease-in-out z-10">
       <div className="text-xl font-medium text-slate-900 mb-8 flex justify-between">
-        RenderPhase{" "}
+        {activeNode.name}
         <button
           onClick={() => {
             onClose();
