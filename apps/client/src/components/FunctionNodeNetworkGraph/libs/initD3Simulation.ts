@@ -21,7 +21,7 @@ const initD3Simulation = ({
       d3
         .forceLink<FunctionNode, LinkDatum>(links)
         .id((d) => d.id)
-        .distance(150),
+        .distance(450),
     )
     .force("charge", d3.forceManyBody().strength(-300))
     .force("center", d3.forceCenter(width / 2, height / 2));
