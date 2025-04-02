@@ -1,3 +1,4 @@
+import { OutputBlockData } from "@editorjs/editorjs";
 import { fetcher } from "../fetcher";
 import { extractLineNumberAndUrl } from "./utils/extractLineNumberAndUrl";
 
@@ -41,7 +42,7 @@ export type ResponseGetFunctionNode = {
   codeText: string;
   fileId: string;
   connection: string[];
-  editorBlock: object[];
+  editorBlock: OutputBlockData[];
 };
 export const requestGetFunctionNode = async ({
   nodeId,
@@ -62,6 +63,18 @@ export const requestGetFunctionNodes = async ({
 }) => {
   const data = await fetcher.get<ResponseGetFunctionNode[]>({
     path: `/function-nodes/?fileId=${fileId}`,
+  });
+
+  return data;
+};
+
+export const requestPatchEditorBlock = async (args: {
+  functionNodeId: string;
+  editorBlock: OutputBlockData[];
+}) => {
+  const data = await fetcher.patch({
+    path: "/function-nodes/editor-block",
+    body: args,
   });
 
   return data;

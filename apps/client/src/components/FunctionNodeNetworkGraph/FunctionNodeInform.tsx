@@ -1,3 +1,5 @@
+import { useRequestPatchEditorBlock } from "@/hooks/queries/functionNode/useRequestPatchEditorBlock";
+import { OutputBlockData } from "@editorjs/editorjs";
 import { Code, Notebook, X } from "lucide-react";
 import CodeViewer from "../CodeViewer/FunctionNodeCodeViewer";
 import { Tabs } from "../common/Tabs";
@@ -10,12 +12,14 @@ export default function FunctionNodeInform({
   onClose,
 }: {
   activeNode: {
+    id: string;
     codeText: string;
-    editorBlock: object[];
+    editorBlock: OutputBlockData[];
     name: string;
   };
   onClose: () => void;
 }) {
+  const { patchEditorBlock } = useRequestPatchEditorBlock();
   return (
     <div className="px-4 py-8 overflow-y-scroll basis-5/6 h-inherit border-l border-slate-200 shadow-lg transform transition-transform duration-300 ease-in-out z-10">
       <div className="text-xl font-medium text-slate-900 mb-8 flex justify-between">
@@ -48,7 +52,12 @@ export default function FunctionNodeInform({
           <CodeViewer initialValue={activeNode.codeText} />
         </TabsContent>
         <TabsContent value="memo">
-          <TextEditorBox />
+          <TextEditorBox
+            onEditorBoxChange={(editorBlock: OutputBlockData[]) => {
+              patchEditorBlock({ functionNodeId: activeNode.id, editorBlock });
+            }}
+            initialValue={activeNode.editorBlock}
+          />
         </TabsContent>
       </Tabs>
     </div>
