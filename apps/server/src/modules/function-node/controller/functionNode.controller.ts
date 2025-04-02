@@ -48,11 +48,11 @@ export class FunctionNodeController {
     this.functionNodeService.deleteFunctionNode(deleteNodeDto);
   }
 
-  @Patch('editor-block')
-  updateEditorBlock(
+  @Patch('/editor-block')
+  async updateEditorBlock(
     @Body()
     updateEditorBlockDto: UpdateEditorBlockDto,
   ) {
-    this.functionNodeService.updateEditorBlock(updateEditorBlockDto);
+    await this.functionNodeService.updateEditorBlock(updateEditorBlockDto);
   }
 }

@@ -43,10 +43,8 @@ export class FunctionNodeService {
 
   async updateEditorBlock(updateEditorBlockDto: UpdateEditorBlockDto) {
     return await this.functionNodeRepository.findOneAndUpdate(
-      { id: updateEditorBlockDto.functionNodeId },
-      {
-        $set: updateEditorBlockDto.editorBlock,
-      },
+      { _id: updateEditorBlockDto.functionNodeId },
+      { editorBlock: updateEditorBlockDto.editorBlock },
     );
   }
 }
