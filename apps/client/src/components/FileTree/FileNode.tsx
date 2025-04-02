@@ -3,7 +3,7 @@ import cn from "@/utils/cn";
 import { Edit, File, Folder, X } from "lucide-react";
 import { JSX } from "react";
 import { NodeRendererProps } from "react-arborist";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 function NodeLabel({
   icon,
@@ -80,6 +80,7 @@ function FileNode({
 
   const isActive = node.isEditing || (node.isSelected && node.isLeaf);
   const router = useNavigate();
+  const params = useParams();
 
   return (
     <div
@@ -88,6 +89,7 @@ function FileNode({
       className={cn(
         "flex cursor-pointer p-2 mb-2 group items-center whitespace-nowrap w-full font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-5 [&_svg]:shrink-0 h-9 rounded-md px-3  justify-between gap-2 hover:bg-primary-100 text-slate-600",
         isActive && "bg-primary-100",
+        params.fileId === node.data.id && "bg-primary-100",
       )}
       onClick={() => {
         if (node.isInternal) {
