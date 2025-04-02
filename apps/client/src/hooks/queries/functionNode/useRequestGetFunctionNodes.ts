@@ -6,7 +6,7 @@ import { useParams } from "react-router";
 export const useRequestGetFunctionNodes = () => {
   const { fileId } = useParams();
   const { data, ...rest } = useQuery({
-    queryKey: [QUERY_KEYS.functionNodeAll],
+    queryKey: [QUERY_KEYS.functionNodeAll(fileId!)],
     queryFn: () => requestGetFunctionNodes({ fileId: fileId as string }),
   });
 
