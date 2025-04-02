@@ -31,4 +31,30 @@ const apiCall =
     }
   };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type CallbackFunctionType = (...args: any[]) => Promise<any>;
+
+export const singleRequest = <F extends CallbackFunctionType>(callback: F) => {
+  const promiseKey = new Map<string, ReturnType<F>>();
+
+  return async (...args: Parameters<F>) => {
+    const key = JSON.stringify(args);
+
+    console.log(key);
+    if (promiseKey.get(key)) {
+      console.log("cash");
+      return promiseKey.get(key)!;
+    }
+    console.log("notCache");
+
+    const promise = callback(...args);
+    promise.then(() => {
+      promiseKey.delete(key);
+    });
+    promiseKey.set(key, promise as ReturnType<F>);
+
+    return promise;
+  };
+};
+
 export const executeFetch = apiCall("http://localhost:3000");
