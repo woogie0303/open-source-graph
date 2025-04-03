@@ -44,6 +44,7 @@ export default function FunctionNodeNetworkGraph() {
       )}
       {activeNodeData && (
         <FunctionNodeInform
+          key={activeNodeData.id}
           activeNode={{
             id: activeNodeData.id,
             codeText: activeNodeData.codeText,

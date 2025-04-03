@@ -40,12 +40,9 @@ export const singleRequest = <F extends CallbackFunctionType>(callback: F) => {
   return async (...args: Parameters<F>) => {
     const key = JSON.stringify(args);
 
-    console.log(key);
     if (promiseKey.get(key)) {
-      console.log("cash");
       return promiseKey.get(key)!;
     }
-    console.log("notCache");
 
     const promise = callback(...args);
     promise.then(() => {
