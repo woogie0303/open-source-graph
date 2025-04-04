@@ -21,6 +21,7 @@
     "@tanstack/react-query-devtools": "^5.69.0",
     "@uiw/codemirror-themes": "^4.23.8",
     "@uiw/react-codemirror": "^4.23.8",
+    "@xyflow/react": "^12.5.4",
     "clsx": "^2.1.1",
     "d3": "^7.9.0",
     "lucide-react": "^0.475.0",
