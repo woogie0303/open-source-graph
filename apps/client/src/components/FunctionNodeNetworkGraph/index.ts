@@ -1,1 +1,1 @@
-export { default as FunctionNodeNetworkGraph } from "./FunctionNodeNetworkGraph";
+export { default as FunctionNodeGraph } from "./FunctionNodeGraph";

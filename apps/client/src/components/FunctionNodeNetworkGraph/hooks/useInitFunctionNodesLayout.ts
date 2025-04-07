@@ -56,7 +56,6 @@ export const useInitFunctionNodesLayout = (
   };
 
   useEffect(() => {
-    console.log("his");
     if (functionNodes) {
       const baseNodes = functionNodes.map((node) => ({
         id: node.id,
