@@ -1,43 +1,66 @@
 import { useRequestGetFunctionNodes } from "@/hooks/queries/functionNode/useRequestGetFunctionNodes";
+import dagre from "@dagrejs/dagre";
 import {
   applyEdgeChanges,
   applyNodeChanges,
+  Background,
   Edge,
   EdgeChange,
-  MarkerType,
   Node,
   NodeChange,
   ReactFlow,
   ReactFlowProps,
   ReactFlowProvider,
-  useReactFlow,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { RefAttributes, useEffect, useRef, useState } from "react";
 import { JSX } from "react/jsx-runtime";
+
+const nodeWidth = 180;
+const nodeHeight = 60;
+
+const dagreGraph = new dagre.graphlib.Graph();
+dagreGraph.setDefaultEdgeLabel(() => ({}));
+
+function layoutElements(nodes: Node[], edges: Edge[]) {
+  dagreGraph.setGraph({
+    rankdir: "TB",
+    ranksep: 300, // 세로 간격 (row 간 거리)
+    nodesep: 200,
+  }); // Top-Bottom 방향
+
+  nodes.forEach((node) => {
+    dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
+  });
+
+  edges.forEach((edge) => {
+    dagreGraph.setEdge(edge.source, edge.target);
+  });
+
+  dagre.layout(dagreGraph);
+
+  return nodes.map((node) => {
+    const { x, y } = dagreGraph.node(node.id);
+    return {
+      ...node,
+      position: { x, y },
+      targetPosition: "top",
+      sourcePosition: "bottom",
+    };
+  });
+}
 
 function Flow(
   props: JSX.IntrinsicAttributes &
     ReactFlowProps<Node, Edge> &
     RefAttributes<HTMLDivElement>,
 ) {
-  // you can access the internal state here
-  const { setViewport } = useReactFlow();
   const flowRef = useRef<HTMLDivElement>(null);
 
   return (
-    <ReactFlow
-      ref={flowRef}
-      {...props}
-      onNodeClick={(node) => {
-        const w = flowRef.current?.getBoundingClientRect().width;
-        const h = flowRef.current?.getBoundingClientRect().height;
-
-        const newX = w! - node.clientX;
-        const newY = h! - node.clientY;
-        setViewport({ x: newX, y: newY, zoom: 2 }, { duration: 800 });
-      }}
-    />
+    <ReactFlow ref={flowRef} {...props}>
+      <Background />
+    </ReactFlow>
   );
 }
 
@@ -47,35 +70,32 @@ export default function ReactflowGraph() {
   const [edges, setEdges] = useState<Edge[]>([]);
 
   useEffect(() => {
-    console.log(1);
     if (functionNodes) {
-      setNodes(
-        functionNodes.map((node) => ({
-          id: node.id,
-          data: { label: node.name },
-          position: { x: Math.random() * 800, y: Math.random() * 600 }, // 기본 배치
+      const baseNodes = functionNodes.map((node) => ({
+        id: node.id,
+        data: { label: node.name },
+        position: { x: 0, y: 0 },
+        style: {
+          width: nodeWidth,
+          height: nodeHeight,
+        },
+      }));
+
+      const baseEdges = functionNodes.flatMap((node) =>
+        node.connection.map((connId) => ({
+          id: `e-${node.id}-${connId}`,
+          source: node.id,
+          target: connId,
+          style: {
+            strokeWidth: 2,
+            stroke: "#EAEAEA",
+          },
         })),
       );
-      setEdges(
-        functionNodes.flatMap((node) =>
-          node.connection.map((connId) => ({
-            id: `e-${node.id}-${connId}`,
-            source: node.id,
-            target: connId,
-            markerEnd: {
-              type: MarkerType.ArrowClosed,
-              width: 20,
-              height: 20,
-              color: "#FF0072",
-            },
-            label: "marker size and color",
-            style: {
-              strokeWidth: 2,
-              stroke: "#FF0072",
-            },
-          })),
-        ),
-      );
+
+      const laidOutNodes = layoutElements(baseNodes, baseEdges) as Node[];
+      setNodes(laidOutNodes);
+      setEdges(baseEdges);
     }
   }, [functionNodes]);
 
@@ -87,6 +107,32 @@ export default function ReactflowGraph() {
     setEdges((eds) => applyEdgeChanges(changes, eds));
   };
 
+  const handleNodeClick = (_: unknown, clickedNode: Node) => {
+    setEdges((prevEdges) =>
+      prevEdges.map((edge) => {
+        if (edge.source === clickedNode.id || edge.target === clickedNode.id) {
+          return {
+            ...edge,
+            animated: true,
+
+            style: {
+              strokeWidth: 2,
+              stroke: "#FF0072",
+            },
+          };
+        }
+        return {
+          ...edge,
+          animated: false,
+          style: {
+            strokeWidth: 2,
+            stroke: "#EAEAEA",
+          },
+        }; // 선택된 것만 활성화
+      }),
+    );
+  };
+  console.log(edges);
   return (
     <div className="size-full">
       <ReactFlowProvider>
@@ -95,6 +141,7 @@ export default function ReactflowGraph() {
           edges={edges}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
+          onNodeClick={handleNodeClick}
           fitView
         />
       </ReactFlowProvider>
