@@ -11,6 +11,7 @@ import {
 import "@xyflow/react/dist/style.css";
 import { RefAttributes, useMemo, useRef, useState } from "react";
 import { JSX } from "react/jsx-runtime";
+import AddFunctionNodeDialog from "./AddFunctionNodeDialog";
 import FunctionNodeInform from "./FunctionNodeInform";
 import { useInitFunctionNodesLayout } from "./hooks/useInitFunctionNodesLayout";
 
@@ -22,9 +23,12 @@ function Flow(
   const flowRef = useRef<HTMLDivElement>(null);
 
   return (
-    <ReactFlow ref={flowRef} {...props}>
-      <Background />
-    </ReactFlow>
+    <div className="size-full relative">
+      <ReactFlow className="size-full" ref={flowRef} {...props}>
+        <Background />
+      </ReactFlow>
+      <AddFunctionNodeDialog />
+    </div>
   );
 }
 

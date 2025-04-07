@@ -57,7 +57,7 @@ function MultiSelect({
         <ChevronDown className="ml-2 h-4 w-4" />
       </button>
       {open && options && (
-        <div className="absolute mt-2 w-full bg-white border rounded-md shadow-md z-10">
+        <div className="absolute mt-2 w-full bg-white border rounded-md shadow-md z-10 h-[250px] overflow-auto">
           {options.map((option) => (
             <div
               key={option.id}

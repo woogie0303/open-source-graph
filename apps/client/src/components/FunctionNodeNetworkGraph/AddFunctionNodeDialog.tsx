@@ -49,7 +49,7 @@ export default function AddFunctionNodeDialog() {
       <Dialog.Trigger>
         <button
           type="submit"
-          className="inline-flex bg-slate-200 items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-slate-400 h-10 px-4 py-2 gap-2"
+          className=" absolute bottom-3 left-3 hover:bg-primary-500 hover:text-white inline-flex bg-slate-200 items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-slate-400 h-10 px-4 py-2 gap-2"
         >
           <GitFork />
           함수 추가
