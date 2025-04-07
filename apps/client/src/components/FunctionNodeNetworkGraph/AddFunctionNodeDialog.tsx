@@ -115,11 +115,10 @@ export default function AddFunctionNodeDialog() {
                   htmlFor="function-title"
                   className="block text-sm font-medium text-slate-700"
                 >
-                  함수 관계
+                  상위 호출자 함수 목록
                 </label>
                 {functionNodes && (
                   <DualSelect
-                    registerFunctionName="sdfsd"
                     options={functionNodes.map((el) => ({
                       id: el.id,
                       name: el.name,

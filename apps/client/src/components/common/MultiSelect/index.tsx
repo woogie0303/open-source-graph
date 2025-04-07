@@ -1,5 +1,5 @@
 import { useClickOutside } from "@/hooks/useClickOutside";
-import { ArrowRight, Check, ChevronDown } from "lucide-react";
+import { Check, ChevronDown } from "lucide-react";
 import { ComponentRef, useRef, useState } from "react";
 
 function MultiSelect({
@@ -78,10 +78,8 @@ function MultiSelect({
 
 export default function DualSelect({
   onMultiSelectValueChange,
-  registerFunctionName,
   options,
 }: {
-  registerFunctionName: string;
   onMultiSelectValueChange: (value: { id: string; name: string }[]) => void;
   options?: { id: string; name: string }[];
 }) {
@@ -91,13 +89,6 @@ export default function DualSelect({
 
   return (
     <div className="flex items-center space-x-4">
-      <div className="w-1/3 flex justify-between items-center border p-2 rounded-md bg-white shadow-sm">
-        {registerFunctionName
-          ? registerFunctionName
-          : "함수 이름을 설정 해주세요"}
-      </div>
-      <ArrowRight size={25} />
-
       <MultiSelect
         onValueChange={onMultiSelectValueChange}
         selected={multiSelected}
