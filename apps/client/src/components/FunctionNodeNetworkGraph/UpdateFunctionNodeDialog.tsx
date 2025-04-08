@@ -1,29 +1,26 @@
-import { requestGetGithubCode } from "@/apis/request/functionNode";
 import { Dialog } from "@/components/common/Dialog";
-import { useRequestCreateFunctionNode } from "@/hooks/queries/functionNode/useRequestCreateFunctionNode";
 import { useRequestGetFunctionNodes } from "@/hooks/queries/functionNode/useRequestGetFunctionNodes";
+import { useRequestUpdateFunctionNode } from "@/hooks/queries/functionNode/useRequestUpdateFunctionNode";
+import { useUpdatableRef } from "@/hooks/useUpdatableRef.ts";
 import { X } from "lucide-react";
 import { ComponentRef, FormEventHandler, useMemo, useRef } from "react";
-import { useParams } from "react-router";
 import DualSelect from "../common/MultiSelect";
-import { parseCodeFromStartLine } from "./utils/parseCodeFromStartLine";
 
 export default function UpdateFunctionNodeDialog({
   open,
   onOpenChange,
   nodeId,
+  onClose,
 }: {
   nodeId: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onClose: () => void;
 }) {
-  const { createFunctionNode } = useRequestCreateFunctionNode();
+  const { updateFunctionNode } = useRequestUpdateFunctionNode();
   const { functionNodes } = useRequestGetFunctionNodes();
-  const param = useParams();
-  const functionNodeUrlRef = useRef<HTMLInputElement>(null);
   const functionNodeTitleRef = useRef<HTMLInputElement>(null);
   const closeButtonRef = useRef<ComponentRef<"button">>(null);
-  const connectionRef = useRef<string[]>([]);
   const selectedValue = useMemo(() => {
     const updateFunctionNode = functionNodes?.find((el) => el.id === nodeId);
 
@@ -33,6 +30,7 @@ export default function UpdateFunctionNodeDialog({
           const functionNode = functionNodes?.find(
             (el) => el.id === selectNodeId,
           );
+
           return {
             id: functionNode!.id,
             name: functionNode!.name,
@@ -46,33 +44,19 @@ export default function UpdateFunctionNodeDialog({
   const nodeName = useMemo(() => {
     return functionNodes?.find((el) => el.id === nodeId)?.name;
   }, [functionNodes, nodeId]);
+  const connectionRef = useUpdatableRef(selectedValue?.map((el) => el.id));
 
-  const createFunctionNodeSubmitHandler: FormEventHandler<
+  const updateFunctionNodeSubmitHandler: FormEventHandler<
     HTMLFormElement
   > = async (e) => {
     e.preventDefault();
-    if (
-      !functionNodeUrlRef.current?.value ||
-      !functionNodeTitleRef.current?.value
-    )
-      return;
-
-    const res = await requestGetGithubCode(functionNodeUrlRef.current?.value);
-    if (res) {
-      const codeText = parseCodeFromStartLine({
-        code: res.codeText,
-        startLine: res.startLine,
-      });
-
-      createFunctionNode({
-        fileId: param.fileId as string,
-        codeText,
-        name: functionNodeTitleRef.current.value,
-        connection: connectionRef.current,
-      });
-
-      closeButtonRef.current?.click();
-    }
+    // TODO: 같은값 일때는 호출안하도록 만들어버리기
+    updateFunctionNode({
+      id: nodeId,
+      name: functionNodeTitleRef.current?.value,
+      connection: connectionRef.current,
+    });
+    onClose();
   };
 
   return (
@@ -93,7 +77,7 @@ export default function UpdateFunctionNodeDialog({
           <div className="p-6">
             <form
               className="space-y-4"
-              onSubmit={createFunctionNodeSubmitHandler}
+              onSubmit={updateFunctionNodeSubmitHandler}
             >
               <div className="space-y-2">
                 <label

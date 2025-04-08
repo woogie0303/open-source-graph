@@ -85,3 +85,18 @@ export const requestDeleteFunctionNode = async (deleteNodeId: string) => {
     path: `/function-nodes?id=${deleteNodeId}`,
   });
 };
+
+export type RequestUpdateFunctionNode = {
+  id: string;
+  name?: string;
+  connection?: string[];
+};
+
+export const requestUpdateFunctionNode = async (
+  updateNode: RequestUpdateFunctionNode,
+) => {
+  await fetcher.patch({
+    path: "/function-nodes/node",
+    body: updateNode,
+  });
+};

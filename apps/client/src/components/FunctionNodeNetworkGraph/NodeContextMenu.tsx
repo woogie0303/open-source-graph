@@ -39,6 +39,7 @@ export default function NodeContextMenu({
   const handleDelete = () => {
     console.log(nodeId);
     deleteFunctionNode(nodeId);
+    onClose();
   };
 
   return (
@@ -70,6 +71,7 @@ export default function NodeContextMenu({
           함수 수정
         </button>
         <UpdateFunctionNodeDialog
+          onClose={onClose}
           nodeId={nodeId}
           open={openUpdateModal}
           onOpenChange={setOpenUpdateModal}
@@ -85,6 +87,7 @@ export default function NodeContextMenu({
           함수 삭제
         </button>
         <UpdateFunctionNodeDialog
+          onClose={onClose}
           nodeId={nodeId}
           open={openUpdateModal}
           onOpenChange={setOpenUpdateModal}
