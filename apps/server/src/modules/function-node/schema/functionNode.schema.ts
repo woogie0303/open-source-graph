@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Expose } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 import { HydratedDocument, Types } from 'mongoose';
 import { TransformObjectIdToString } from 'src/common/decorator/Expose.decorator';
 import { EditorBlock } from '../types/functionNode.type';
@@ -24,13 +24,20 @@ export class FunctionNode {
   fileId: Types.ObjectId;
 
   @TransformObjectIdToString({ toClassOnly: true })
-  @Prop({ type: Types.ObjectId, ref: 'FunctionNode', default: null })
+  @Prop({
+    type: [{ type: Types.ObjectId, ref: 'FunctionNode' }],
+    default: [],
+  })
   @Expose()
-  connection: Types.ObjectId[] | null;
+  connection: Types.ObjectId[];
 
   @Prop()
   @Expose()
   editorBlock?: EditorBlock[];
+
+  @Prop()
+  @Exclude()
+  isDeleted: boolean;
 }
 
 export type FunctionNodeDocument = HydratedDocument<FunctionNode>;

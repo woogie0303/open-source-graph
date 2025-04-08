@@ -60,6 +60,16 @@ export abstract class BaseRepository<T> {
       .exec();
   }
 
+  async findWithPopulate(
+    documentFilterQuery: FilterQuery<T>,
+    populateOptions: any,
+  ): Promise<T[]> {
+    return this.model
+      .find(documentFilterQuery)
+      .populate(populateOptions)
+      .exec();
+  }
+
   async deleteOne(documentFilterQuery: FilterQuery<T>): Promise<boolean> {
     const deleteResult = await this.model.deleteOne(documentFilterQuery).exec();
 

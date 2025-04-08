@@ -18,8 +18,30 @@ export class FunctionNodeService {
 
   @ReturnValueToDto(FunctionNode)
   async getAllFunctionNodes(fileId: string) {
-    return await this.functionNodeRepository.find({
-      fileId: new Types.ObjectId(fileId),
+    const data = await this.functionNodeRepository.findWithPopulate(
+      { fileId: new Types.ObjectId(fileId), isDeleted: false },
+      {
+        path: 'connection',
+        model: 'FunctionNode',
+        match: {}, // match는 생략하고 필터링 직접 처리
+      },
+    );
+
+    return data.map((fn: any) => {
+      const populatedConnections = fn.connection || [];
+
+      // 필터: isDeleted가 false인 문서만 남기고
+      const validConnections = populatedConnections.filter(
+        (conn: any) => conn && conn.isDeleted === false,
+      );
+
+      // ObjectId만 추출
+      const connectionIds = validConnections.map((conn: any) => conn._id);
+
+      return {
+        ...fn.toObject(),
+        connection: connectionIds, // ← 다시 ObjectId[] 로 변환
+      };
     });
   }
 
@@ -35,11 +57,15 @@ export class FunctionNodeService {
       codeText: newFunctionNode.codeText,
       fileId: newFunctionNode.fileId,
       connection: newFunctionNode.connection,
+      isDeleted: false,
     });
   }
 
   deleteFunctionNode(deleteNodeDto: DeleteNodeDto) {
-    this.functionNodeRepository.deleteOne({ _id: deleteNodeDto.id });
+    this.functionNodeRepository.updateOne(
+      { _id: deleteNodeDto.id },
+      { isDeleted: true },
+    );
   }
 
   async updateEditorBlock(updateEditorBlockDto: UpdateEditorBlockDto) {
