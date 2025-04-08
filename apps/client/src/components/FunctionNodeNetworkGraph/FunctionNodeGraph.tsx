@@ -105,6 +105,7 @@ export default function FunctionNodeGraph() {
       <AnimatePresence>
         {contextMenu.visible && (
           <NodeContextMenu
+            key={contextMenu.nodeId}
             position={contextMenu.position}
             nodeId={contextMenu.nodeId}
             nodeName={contextMenu.nodeName}

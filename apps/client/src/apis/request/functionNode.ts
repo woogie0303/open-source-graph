@@ -79,3 +79,9 @@ export const requestPatchEditorBlock = async (args: {
 
   return data;
 };
+
+export const requestDeleteFunctionNode = async (deleteNodeId: string) => {
+  await fetcher.delete({
+    path: `/function-nodes?id=${deleteNodeId}`,
+  });
+};

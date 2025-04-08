@@ -1,5 +1,6 @@
 "use client";
 
+import { useRequestDeleteFunctionNode } from "@/hooks/queries/functionNode/useRequestDeleteFunctionNode";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { Edit, Trash2 } from "lucide-react";
 import { motion } from "motion/react";
@@ -21,6 +22,7 @@ export default function NodeContextMenu({
 }: NodeContextMenuProps) {
   const menuRef = useRef<HTMLDivElement>(null);
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
+  const { deleteFunctionNode } = useRequestDeleteFunctionNode();
 
   useClickOutside({
     elementRef: menuRef,
@@ -34,7 +36,10 @@ export default function NodeContextMenu({
     setOpenUpdateModal(true);
   };
 
-  const handleDelete = () => {};
+  const handleDelete = () => {
+    console.log(nodeId);
+    deleteFunctionNode(nodeId);
+  };
 
   return (
     <>
