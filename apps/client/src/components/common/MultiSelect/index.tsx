@@ -1,6 +1,6 @@
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { Check, ChevronDown } from "lucide-react";
-import { ComponentRef, useRef, useState } from "react";
+import { ComponentRef, useEffect, useRef, useState } from "react";
 
 function MultiSelect({
   selected,
@@ -79,13 +79,21 @@ function MultiSelect({
 export default function DualSelect({
   onMultiSelectValueChange,
   options,
+  selectedValue,
 }: {
   onMultiSelectValueChange: (value: { id: string; name: string }[]) => void;
   options?: { id: string; name: string }[];
+  selectedValue?: { id: string; name: string }[];
 }) {
   const [multiSelected, setMultiSelected] = useState<
     { id: string; name: string }[]
   >([]);
+
+  useEffect(() => {
+    if (selectedValue) {
+      setMultiSelected(selectedValue);
+    }
+  }, [selectedValue]);
 
   return (
     <div className="flex items-center space-x-4">
