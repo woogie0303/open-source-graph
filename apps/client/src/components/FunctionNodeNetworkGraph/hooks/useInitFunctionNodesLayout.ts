@@ -39,7 +39,7 @@ export const useInitFunctionNodesLayout = (
 
             style: {
               strokeWidth: 2,
-              stroke: "#FF0072",
+              stroke: "#3b82f6",
             },
           };
         }
@@ -71,8 +71,8 @@ export const useInitFunctionNodesLayout = (
           ) {
             return {
               id: `e-${node.id}-${connId}`,
-              source: node.id,
-              target: connId,
+              source: connId,
+              target: node.id,
               animated: true,
               style: {
                 strokeWidth: 2,
@@ -82,8 +82,8 @@ export const useInitFunctionNodesLayout = (
           }
           return {
             id: `e-${node.id}-${connId}`,
-            source: node.id,
-            target: connId,
+            source: connId,
+            target: node.id,
             style: {
               strokeWidth: 2,
               stroke: "#EAEAEA",
