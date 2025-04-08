@@ -9,11 +9,13 @@ import {
   ReactFlowProvider,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { RefAttributes, useMemo, useRef, useState } from "react";
+import { AnimatePresence } from "motion/react";
+import { RefAttributes, useCallback, useMemo, useRef, useState } from "react";
 import { JSX } from "react/jsx-runtime";
 import AddFunctionNodeDialog from "./AddFunctionNodeDialog";
 import FunctionNodeInform from "./FunctionNodeInform";
 import { useInitFunctionNodesLayout } from "./hooks/useInitFunctionNodesLayout";
+import NodeContextMenu from "./NodeContextMenu";
 
 function Flow(
   props: JSX.IntrinsicAttributes &
@@ -44,7 +46,31 @@ export default function FunctionNodeGraph() {
   }, [activeNodeId, functionNodes]);
   const { onEdgesChange, onNodeClick, onNodesChange, nodes, edges } =
     useInitFunctionNodesLayout(functionNodes, activeNodeIdRef);
+  const [contextMenu, setContextMenu] = useState({
+    visible: false,
+    position: { x: 0, y: 0 },
+    nodeId: "",
+    nodeName: "",
+  });
+  const onNodeContextMenu = useCallback(
+    (event: React.MouseEvent, node: Node) => {
+      // 기본 컨텍스트 메뉴 방지
+      event.preventDefault();
+      if (!functionNodes) return;
+      // 노드 데이터 찾기
+      const functionData = functionNodes.find((item) => item.id === node.id);
+      if (!functionData) return;
 
+      // 컨텍스트 메뉴 위치 설정 (마우스 위치 기준)
+      setContextMenu({
+        visible: true,
+        position: { x: event.clientX, y: event.clientY },
+        nodeId: node.id,
+        nodeName: functionData.name,
+      });
+    },
+    [functionNodes],
+  );
   return (
     <div className="size-full flex">
       <ReactFlowProvider>
@@ -53,6 +79,7 @@ export default function FunctionNodeGraph() {
           edges={edges}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
+          onNodeContextMenu={onNodeContextMenu}
           onNodeClick={(event, node) => {
             onNodeClick(event, node);
             setActiveNodeId(node.id);
@@ -74,6 +101,19 @@ export default function FunctionNodeGraph() {
           }}
         />
       )}
+      {/* 컨텍스트 메뉴 */}
+      <AnimatePresence>
+        {contextMenu.visible && (
+          <NodeContextMenu
+            position={contextMenu.position}
+            nodeId={contextMenu.nodeId}
+            nodeName={contextMenu.nodeName}
+            onClose={() =>
+              setContextMenu((prev) => ({ ...prev, visible: false }))
+            }
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
