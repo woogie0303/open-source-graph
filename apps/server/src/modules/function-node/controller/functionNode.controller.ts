@@ -13,6 +13,7 @@ import {
   UpdateEditorBlockDto,
 } from '../dto/functionNode.dto';
 import { GetFunctionNodeDto } from '../dto/GetFunctionNode.dto';
+import { UpdateFunctionNode } from '../dto/UpdateFunctionNode.dto';
 import { FunctionNodeService } from '../service/functionNode.service';
 
 @Controller('function-nodes')
@@ -54,5 +55,15 @@ export class FunctionNodeController {
     updateEditorBlockDto: UpdateEditorBlockDto,
   ) {
     await this.functionNodeService.updateEditorBlock(updateEditorBlockDto);
+  }
+
+  @Patch('/node')
+  async updateFunctionNode(
+    @Body()
+    updateFunctionNodeDti: UpdateFunctionNode,
+  ) {
+    return await this.functionNodeService.updateFunctionNode(
+      updateFunctionNodeDti,
+    );
   }
 }

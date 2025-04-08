@@ -6,6 +6,7 @@ import {
   CreateFunctionNodeDto,
   UpdateEditorBlockDto,
 } from '../dto/functionNode.dto';
+import { UpdateFunctionNode } from '../dto/UpdateFunctionNode.dto';
 import { FunctionNodeRepository } from '../repository/functionNode.repository';
 import { FunctionNode } from '../schema/functionNode.schema';
 
@@ -45,6 +46,18 @@ export class FunctionNodeService {
     return await this.functionNodeRepository.findOneAndUpdate(
       { _id: updateEditorBlockDto.functionNodeId },
       { editorBlock: updateEditorBlockDto.editorBlock },
+    );
+  }
+
+  async updateFunctionNode(updateFunctionNodeDto: UpdateFunctionNode) {
+    await this.functionNodeRepository.findOneAndUpdate(
+      {
+        _id: updateFunctionNodeDto.id,
+      },
+      {
+        name: updateFunctionNodeDto.name,
+        connection: updateFunctionNodeDto.connection,
+      },
     );
   }
 }
