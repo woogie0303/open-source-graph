@@ -18,7 +18,7 @@ export default function FunctionNodeGraph() {
     useActiveContextMenu(functionNodes);
 
   return (
-    <div className="size-full flex">
+    <section className="size-full flex">
       <ReactFlowProvider>
         <div className="size-full relative">
           <ReactFlow
@@ -67,6 +67,6 @@ export default function FunctionNodeGraph() {
           onClose={closeContextMenu}
         />
       )}
-    </div>
+    </section>
   );
 }

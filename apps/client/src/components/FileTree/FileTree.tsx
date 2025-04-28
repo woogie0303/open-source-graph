@@ -18,7 +18,7 @@ const Arborist = () => {
   const { fileTreeNode } = useRequestGetFileTreeNode();
 
   return (
-    <div className="h-inherit flex flex-col border-r bg-background border-slate-200 w-[300px] p-5">
+    <section className="h-inherit flex flex-col border-r bg-background border-slate-200 w-[300px] p-5">
       <div className="flex justify-between items-center mb-3">
         <h3 className="font-medium text-slate-700">Files</h3>
         <div className="gap-2 flex">
@@ -59,7 +59,7 @@ const Arborist = () => {
           {FileNode}
         </Tree>
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -21,7 +21,7 @@ export default function FunctionNodeInform({
 }) {
   const { patchEditorBlock } = useRequestPatchEditorBlock();
   return (
-    <div className="px-4 py-8 overflow-y-scroll basis-5/6 h-inherit border-l border-slate-200 shadow-lg transform transition-transform duration-300 ease-in-out z-10">
+    <section className="px-4 py-8 overflow-y-scroll basis-5/6 h-inherit border-l border-slate-200 shadow-lg transform transition-transform duration-300 ease-in-out z-10">
       <div className="text-xl font-medium text-slate-900 mb-8 flex justify-between">
         {activeNode.name}
         <button
@@ -60,6 +60,6 @@ export default function FunctionNodeInform({
           />
         </TabsContent>
       </Tabs>
-    </div>
+    </section>
   );
 }
