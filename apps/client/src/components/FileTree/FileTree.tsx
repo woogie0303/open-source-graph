@@ -55,7 +55,6 @@ const Arborist = () => {
             treeRef.current?.edit(newNodeId);
             return newNodeId;
           }}
-          onMove={() => {}}
         >
           {FileNode}
         </Tree>
