@@ -1,9 +1,10 @@
 import { ResponseFileTreeNode } from "@/apis/request/fileTree";
+import { useRouter } from "@/libs/router/hooks/useRouter";
 import cn from "@/utils/cn";
 import { Edit, File, Folder, X } from "lucide-react";
 import { JSX } from "react";
 import { NodeRendererProps } from "react-arborist";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 
 function NodeLabel({
   icon,
@@ -79,7 +80,7 @@ function FileNode({
   };
 
   const isActive = node.isEditing || (node.isSelected && node.isLeaf);
-  const router = useNavigate();
+  const router = useRouter();
   const params = useParams();
 
   return (
@@ -97,7 +98,9 @@ function FileNode({
           return;
         }
 
-        router(`/function-nodes/${node.data.id}`);
+        router.push("/function-nodes/:fileId", {
+          params: { fileId: node.data.id },
+        });
       }}
     >
       <NodeLabel
