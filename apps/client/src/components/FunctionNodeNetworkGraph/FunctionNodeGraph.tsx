@@ -40,7 +40,12 @@ export default function FunctionNodeGraph() {
           >
             <Background />
           </ReactFlow>
-          <AddFunctionNodeDialog />
+          <AddFunctionNodeDialog
+            clearActiveStateNode={() => {
+              const resetEdges = clearActiveNodeAndEdges({ edges });
+              onEdgesChange(resetEdges);
+            }}
+          />
         </div>
       </ReactFlowProvider>
       {activeNodeData && (

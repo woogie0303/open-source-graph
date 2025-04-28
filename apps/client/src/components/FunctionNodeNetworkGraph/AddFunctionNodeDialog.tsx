@@ -8,7 +8,11 @@ import { useParams } from "react-router";
 import { MultiSelect } from "../common/MultiSelect";
 import { parseCodeFromStartLine } from "./utils/parseCodeFromStartLine";
 
-export default function AddFunctionNodeDialog() {
+export default function AddFunctionNodeDialog({
+  clearActiveStateNode,
+}: {
+  clearActiveStateNode: () => void;
+}) {
   const { createFunctionNode } = useRequestCreateFunctionNode();
   const { functionNodes } = useRequestGetFunctionNodes();
   const param = useParams();
@@ -34,13 +38,13 @@ export default function AddFunctionNodeDialog() {
         startLine: res.startLine,
       });
 
-      createFunctionNode({
+      await createFunctionNode({
         fileId: param.fileId as string,
         codeText,
         name: functionNodeTitleRef.current.value,
         connection: connectionRef.current,
       });
-
+      clearActiveStateNode();
       connectionRef.current = [];
       closeButtonRef.current?.click();
     }
