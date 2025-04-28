@@ -7,7 +7,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useRequestDeleteFileTreeNode = () => {
   const queryClient = useQueryClient();
-  const { mutate, ...rest } = useMutation({
+  const { mutateAsync, ...rest } = useMutation({
     mutationFn: ({ id }: RequestDeleteFileTreeNode) =>
       requestDeleteFileTreeNode({ id }),
 
@@ -17,7 +17,7 @@ export const useRequestDeleteFileTreeNode = () => {
   });
 
   return {
-    deleteFileTreeNode: mutate,
+    deleteFileTreeNode: mutateAsync,
     ...rest,
   };
 };

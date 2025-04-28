@@ -51,7 +51,14 @@ function NodeActions({
       <button onClick={onRenameHandler} title="Rename..." aria-label="rename">
         <Edit />
       </button>
-      <button aria-label="delete" onClick={onDeleteHandler} title="Delete">
+      <button
+        aria-label="delete"
+        onClick={(e) => {
+          e.stopPropagation();
+          onDeleteHandler();
+        }}
+        title="Delete"
+      >
         <X />
       </button>
     </div>
@@ -120,6 +127,9 @@ function FileNode({
       <NodeActions
         onDeleteHandler={() => {
           tree.delete(node.id);
+          if (node.id === params.fileId) {
+            router.push("/function-nodes");
+          }
         }}
         onRenameHandler={() => {
           node.edit();
