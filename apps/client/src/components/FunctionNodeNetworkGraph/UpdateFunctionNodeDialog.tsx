@@ -51,6 +51,10 @@ export default function UpdateFunctionNodeDialog({
   > = async (e) => {
     e.preventDefault();
 
+    // TODO: react-hook-form 에러 도입
+    if (!functionNodeTitleRef.current?.value)
+      throw new Error("함수 이름이 비었습니다.");
+
     updateFunctionNode({
       id: nodeId,
       name: functionNodeTitleRef.current?.value,

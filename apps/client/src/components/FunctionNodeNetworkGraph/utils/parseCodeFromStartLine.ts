@@ -19,6 +19,7 @@ export const parseCodeFromStartLine = ({
 
   const firstLine = lines[startIndex].trim();
 
+  // TODO: react-hook-form 에러도입
   // 첫 줄에 '('가 있는지 확인
   if (!firstLine.includes("(")) {
     throw new Error("첫 줄에 '(' 가 포함되어야 합니다.");

@@ -39,10 +39,11 @@ const Arborist = () => {
           height={height}
           rowHeight={40}
           onRename={(node) => {
+            if (node.name === "") throw new Error("파일 이름이 비었습니다");
             updateFileTreeNodeName({ id: node.id, newName: node.name });
           }}
-          onDelete={(node) => {
-            deleteFileTreeNode({ id: node.ids[0] });
+          onDelete={async (node) => {
+            await deleteFileTreeNode({ id: node.ids[0] });
           }}
           onCreate={async (node) => {
             const newNodeId = await createFileTreeNode({
