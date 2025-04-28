@@ -5,7 +5,7 @@ import { useRequestGetFunctionNodes } from "@/hooks/queries/functionNode/useRequ
 import { GitFork, TriangleAlert, X } from "lucide-react";
 import { ComponentRef, FormEventHandler, useRef } from "react";
 import { useParams } from "react-router";
-import DualSelect from "../common/MultiSelect";
+import { MultiSelect } from "../common/MultiSelect";
 import { parseCodeFromStartLine } from "./utils/parseCodeFromStartLine";
 
 export default function AddFunctionNodeDialog() {
@@ -41,6 +41,7 @@ export default function AddFunctionNodeDialog() {
         connection: connectionRef.current,
       });
 
+      connectionRef.current = [];
       closeButtonRef.current?.click();
     }
   };
@@ -118,12 +119,15 @@ export default function AddFunctionNodeDialog() {
                   상위 호출자 함수 목록
                 </label>
                 {functionNodes && (
-                  <DualSelect
+                  <MultiSelect
                     options={functionNodes.map((el) => ({
                       id: el.id,
                       name: el.name,
                     }))}
-                    onMultiSelectValueChange={(value) => {
+                    selectedValue={functionNodes.filter((node) =>
+                      connectionRef.current.includes(node.id),
+                    )}
+                    onValueChange={(value) => {
                       connectionRef.current = value.map((el) => el.id);
                     }}
                   />

@@ -4,7 +4,7 @@ import { useRequestUpdateFunctionNode } from "@/hooks/queries/functionNode/useRe
 import { useUpdatableRef } from "@/hooks/useUpdatableRef.ts";
 import { X } from "lucide-react";
 import { ComponentRef, FormEventHandler, useMemo, useRef } from "react";
-import DualSelect from "../common/MultiSelect";
+import { MultiSelect } from "../common/MultiSelect";
 
 export default function UpdateFunctionNodeDialog({
   open,
@@ -50,7 +50,7 @@ export default function UpdateFunctionNodeDialog({
     HTMLFormElement
   > = async (e) => {
     e.preventDefault();
-    // TODO: 같은값 일때는 호출안하도록 만들어버리기
+
     updateFunctionNode({
       id: nodeId,
       name: functionNodeTitleRef.current?.value,
@@ -104,15 +104,17 @@ export default function UpdateFunctionNodeDialog({
                   상위 호출자 함수 목록
                 </label>
                 {functionNodes && (
-                  <DualSelect
-                    options={functionNodes.map((el) => ({
-                      id: el.id,
-                      name: el.name,
-                    }))}
-                    onMultiSelectValueChange={(value) => {
+                  <MultiSelect
+                    options={functionNodes
+                      .map((el) => ({
+                        id: el.id,
+                        name: el.name,
+                      }))
+                      .filter((el) => nodeId !== el.id)}
+                    selectedValue={selectedValue}
+                    onValueChange={(value) => {
                       connectionRef.current = value.map((el) => el.id);
                     }}
-                    selectedValue={selectedValue}
                   />
                 )}
               </div>

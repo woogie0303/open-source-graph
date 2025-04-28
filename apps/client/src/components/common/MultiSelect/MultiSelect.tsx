@@ -3,21 +3,25 @@ import { Check, ChevronDown } from "lucide-react";
 import { ComponentRef, useEffect, useRef, useState } from "react";
 
 // TODO: Radix UI Select 오픈소스 보고 구현해보기
-function MultiSelect({
-  selected,
-  setSelected,
+export default function MultiSelect({
+  selectedValue,
   onValueChange,
   options,
 }: {
   options?: { id: string; name: string }[];
-  selected: { id: string; name: string }[];
-  setSelected: React.Dispatch<
-    React.SetStateAction<{ id: string; name: string }[]>
-  >;
+  selectedValue?: { id: string; name: string }[];
   onValueChange: (value: { id: string; name: string }[]) => void;
 }) {
+  const [selected, setSelected] = useState<{ id: string; name: string }[]>([]);
   const [open, setOpen] = useState(false);
   const elementRef = useRef<ComponentRef<"div">>(null);
+
+  useEffect(() => {
+    if (selectedValue) {
+      setSelected(selectedValue);
+    }
+  }, [selectedValue]);
+
   const toggleSelection = (value: { id: string; name: string }) => {
     const newValue = selected.find((el) => el.id === value.id)
       ? selected.filter((item) => item.id !== value.id)
@@ -28,10 +32,8 @@ function MultiSelect({
   };
 
   useClickOutside({
-    elementRef: elementRef,
-    callback: () => {
-      setOpen(false);
-    },
+    elementRef,
+    callback: () => setOpen(false),
   });
 
   return (
@@ -57,8 +59,9 @@ function MultiSelect({
 
         <ChevronDown className="ml-2 h-4 w-4" />
       </button>
+
       {open && options && (
-        <div className="absolute mt-2 w-full bg-white border rounded-md shadow-md z-10 h-[250px] overflow-auto">
+        <div className="absolute mt-2 w-full bg-white border rounded-md shadow-md z-10 max-h-[250px] overflow-auto">
           {options.map((option) => (
             <div
               key={option.id}
@@ -73,37 +76,6 @@ function MultiSelect({
           ))}
         </div>
       )}
-    </div>
-  );
-}
-
-export default function DualSelect({
-  onMultiSelectValueChange,
-  options,
-  selectedValue,
-}: {
-  onMultiSelectValueChange: (value: { id: string; name: string }[]) => void;
-  options?: { id: string; name: string }[];
-  selectedValue?: { id: string; name: string }[];
-}) {
-  const [multiSelected, setMultiSelected] = useState<
-    { id: string; name: string }[]
-  >([]);
-
-  useEffect(() => {
-    if (selectedValue) {
-      setMultiSelected(selectedValue);
-    }
-  }, [selectedValue]);
-
-  return (
-    <div className="flex items-center space-x-4">
-      <MultiSelect
-        onValueChange={onMultiSelectValueChange}
-        selected={multiSelected}
-        setSelected={setMultiSelected}
-        options={options}
-      />
     </div>
   );
 }
