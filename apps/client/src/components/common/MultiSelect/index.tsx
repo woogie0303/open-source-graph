@@ -2,6 +2,7 @@ import { useClickOutside } from "@/hooks/useClickOutside";
 import { Check, ChevronDown } from "lucide-react";
 import { ComponentRef, useEffect, useRef, useState } from "react";
 
+// TODO: Radix UI Select 오픈소스 보고 구현해보기
 function MultiSelect({
   selected,
   setSelected,

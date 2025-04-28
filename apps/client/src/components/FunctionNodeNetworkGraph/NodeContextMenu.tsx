@@ -3,7 +3,7 @@
 import { useRequestDeleteFunctionNode } from "@/hooks/queries/functionNode/useRequestDeleteFunctionNode";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { Edit, Trash2 } from "lucide-react";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { useRef, useState } from "react";
 import UpdateFunctionNodeDialog from "./UpdateFunctionNodeDialog";
 
@@ -37,13 +37,12 @@ export default function NodeContextMenu({
   };
 
   const handleDelete = () => {
-    console.log(nodeId);
     deleteFunctionNode(nodeId);
     onClose();
   };
 
   return (
-    <>
+    <AnimatePresence>
       <motion.div
         ref={menuRef}
         initial={{ opacity: 0, scale: 0.9 }}
@@ -86,13 +85,7 @@ export default function NodeContextMenu({
           <Trash2 className="h-4 w-4" />
           함수 삭제
         </button>
-        <UpdateFunctionNodeDialog
-          onClose={onClose}
-          nodeId={nodeId}
-          open={openUpdateModal}
-          onOpenChange={setOpenUpdateModal}
-        />
       </motion.div>
-    </>
+    </AnimatePresence>
   );
 }
