@@ -10,7 +10,7 @@ export const useRequestCreateFunctionNode = () => {
   const { fileId } = useParams();
   const queryClient = useQueryClient();
 
-  const { mutate, ...rest } = useMutation({
+  const { mutateAsync, ...rest } = useMutation({
     mutationFn: (arg: RequestCreateFunctionNode) => {
       return requestCreateFunctionNode(arg);
     },
@@ -21,5 +21,5 @@ export const useRequestCreateFunctionNode = () => {
     },
   });
 
-  return { createFunctionNode: mutate, ...rest };
+  return { createFunctionNode: mutateAsync, ...rest };
 };

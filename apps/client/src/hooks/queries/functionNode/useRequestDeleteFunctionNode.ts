@@ -7,7 +7,7 @@ export const useRequestDeleteFunctionNode = () => {
   const queryClient = useQueryClient();
   const { fileId } = useParams();
 
-  const { mutate, ...rest } = useMutation({
+  const { mutateAsync, ...rest } = useMutation({
     mutationFn: (deleteNodeId: string) =>
       requestDeleteFunctionNode(deleteNodeId),
     onSuccess: () => {
@@ -17,5 +17,5 @@ export const useRequestDeleteFunctionNode = () => {
     },
   });
 
-  return { deleteFunctionNode: mutate, ...rest };
+  return { deleteFunctionNode: mutateAsync, ...rest };
 };

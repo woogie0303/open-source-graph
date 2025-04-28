@@ -36,8 +36,8 @@ export default function NodeContextMenu({
     setOpenUpdateModal(true);
   };
 
-  const handleDelete = () => {
-    deleteFunctionNode(nodeId);
+  const handleDelete = async () => {
+    await deleteFunctionNode(nodeId);
     onClose();
   };
 

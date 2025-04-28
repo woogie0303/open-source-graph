@@ -1,6 +1,6 @@
 import { ResponseGetFunctionNode } from "@/apis/request/functionNode";
 import { Edge, EdgeReplaceChange } from "@xyflow/react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 const useActiveFunctionNode = (
   functionNodes: ResponseGetFunctionNode[] | undefined,
@@ -62,10 +62,7 @@ const useActiveFunctionNode = (
       };
     });
   };
-  useEffect(() => {
-    // 새로운 함수 노드 추가시  invalidateQueries가 적용될때 activeNodeInform unmount 안되는 오류 해결
-    setActiveNodeId(null);
-  }, [functionNodes]);
+
   return {
     updateActiveNodeAndEdges,
     clearActiveNodeAndEdges,
