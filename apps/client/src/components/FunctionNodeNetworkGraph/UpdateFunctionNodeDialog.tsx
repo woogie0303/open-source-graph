@@ -2,7 +2,7 @@ import { Dialog } from "@/components/common/Dialog";
 import { useRequestGetFunctionNodes } from "@/hooks/queries/functionNode/useRequestGetFunctionNodes";
 import { useRequestUpdateFunctionNode } from "@/hooks/queries/functionNode/useRequestUpdateFunctionNode";
 import { useUpdatableRef } from "@/hooks/useUpdatableRef.ts";
-import { X } from "lucide-react";
+import { Close } from "icons";
 import { ComponentRef, FormEventHandler, useMemo, useRef } from "react";
 import { MultiSelect } from "../common/MultiSelect";
 
@@ -75,7 +75,7 @@ export default function UpdateFunctionNodeDialog({
               ref={closeButtonRef}
               className="text-slate-400 hover:text-slate-500 transition-colors"
             >
-              <X className="h-5 w-5" />
+              <Close className="h-5 w-5" />
             </Dialog.Close>
           </div>
           <div className="p-6">

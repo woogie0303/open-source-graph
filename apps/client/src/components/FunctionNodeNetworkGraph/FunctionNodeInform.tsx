@@ -1,6 +1,6 @@
 import { useRequestPatchEditorBlock } from "@/hooks/queries/functionNode/useRequestPatchEditorBlock";
 import { OutputBlockData } from "@editorjs/editorjs";
-import { Code, Notebook, X } from "lucide-react";
+import { Close, Code, Notebook } from "icons";
 import CodeViewer from "../CodeViewer/FunctionNodeCodeViewer";
 import { Tabs } from "../common/Tabs";
 import TabsContent from "../common/Tabs/TabsContent";
@@ -29,7 +29,7 @@ export default function FunctionNodeInform({
             onClose();
           }}
         >
-          <X />
+          <Close />
         </button>
       </div>
       <Tabs defaultValue="code">

@@ -2,7 +2,7 @@ import { requestGetGithubCode } from "@/apis/request/functionNode";
 import { Dialog } from "@/components/common/Dialog";
 import { useRequestCreateFunctionNode } from "@/hooks/queries/functionNode/useRequestCreateFunctionNode";
 import { useRequestGetFunctionNodes } from "@/hooks/queries/functionNode/useRequestGetFunctionNodes";
-import { GitFork, TriangleAlert, X } from "lucide-react";
+import { Close, GitFork, TriangleAlert } from "icons";
 import { ComponentRef, FormEventHandler, useRef } from "react";
 import { useParams } from "react-router";
 import { MultiSelect } from "../common/MultiSelect";
@@ -70,7 +70,7 @@ export default function AddFunctionNodeDialog({
               ref={closeButtonRef}
               className="text-slate-400 hover:text-slate-500 transition-colors"
             >
-              <X className="h-5 w-5" />
+              <Close className="h-5 w-5" />
             </Dialog.Close>
           </div>
           <div className="p-6">
@@ -95,7 +95,7 @@ export default function AddFunctionNodeDialog({
                   required
                 />
                 <p className="text-xs text-slate-500 flex items-center gap-1">
-                  <TriangleAlert size={18} className="text-red-600" />
+                  <TriangleAlert className="text-red-600 size-[18px]" />
                   <span>함수 URL만 입력해주세요</span>
                 </p>
               </div>

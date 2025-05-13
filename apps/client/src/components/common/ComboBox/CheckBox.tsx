@@ -1,4 +1,4 @@
-import { Check, ChevronRight } from "lucide-react";
+import { Check, ChevronRight } from "icons";
 
 type CheckBoxType = {
   id: string;

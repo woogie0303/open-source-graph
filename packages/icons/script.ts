@@ -29,17 +29,35 @@ const createComponentContent = (
     (attr) => attr !== 'fill="none"',
   );
   const hasFill = fillAttributes.length;
+
   const { width, height, viewBox } = extractSvgAttributes(svgContent);
-  const propsString = `{ className, ${width}, ${height}, ${viewBox}${hasStroke || hasFill ? ` ${hasStroke ? ', stroke = "#000000"' : ""}${hasFill ? ', fill = "#000000"' : ""}` : ""}, ...rest }`;
-  const modifiedSvgContent = svgContent
-    .replace(/-(\w)/g, (_, letter) => letter.toUpperCase())
-    .replace(/width="(\d+)"/g, `width={width}`)
-    .replace(/height="(\d+)"/g, `height={height}`)
-    .replace(/viewBox="(.*?)"/g, `viewBox={viewBox}`)
+
+  const propsString = `{ className, ${width}, ${height}, ${viewBox}${hasStroke || hasFill ? ` ${hasStroke ? ', stroke = "currentColor"' : ""}${hasFill ? ', fill = "#000000"' : ""}` : ""}, ...rest }`;
+
+  // === 1. 보호: d="..." 속성 백업 ===
+  const dRegex = /d="[^"]*"/g;
+  const dMatches = svgContent.match(dRegex) || [];
+  let protectedSvg = svgContent.replace(dRegex, "__d_placeholder__");
+
+  // === 2. camelCase 처리 (stroke-width → strokeWidth 등) ===
+  protectedSvg = protectedSvg.replace(/-(\w)/g, (_, letter) =>
+    letter.toUpperCase(),
+  );
+
+  // === 3. d 속성 복원 ===
+  dMatches.forEach((d) => {
+    protectedSvg = protectedSvg.replace("__d_placeholder__", d);
+  });
+
+  // === 4. JSX-friendly 속성 및 구조 변경 ===
+  const modifiedSvgContent = protectedSvg
+    .replace(/width="[^"]*"/, `width={width}`)
+    .replace(/height="[^"]*"/, `height={height}`)
+    .replace(/viewBox="[^"]*"/, `viewBox={viewBox}`)
     .replace(/<svg([^>]*)fill="[^"]*"([^>]*)>/, "<svg$1$2>")
     .replace(/fill="([^"]+)"/g, `fill={fill}`)
     .replace(/stroke="([^"]+)"/g, `stroke={stroke}`)
-    .replace(/class="([^"]+)"/g, ``)
+    .replace(/class="([^"]+)"/g, "")
     .replace(
       /<svg([^>]*)>/,
       `<svg$1 aria-label="${iconName} icon" fill="none" ref={ref} className={className} {...rest}>`,
@@ -47,7 +65,6 @@ const createComponentContent = (
 
   return `
     import { forwardRef } from 'react';
-    
     import type { IconProps } from "@/types/Icon";
 
     const ${componentName} = forwardRef<SVGSVGElement, IconProps>(

@@ -1,0 +1,15 @@
+export * from "../types/Icon";
+export { default as Check } from "./Check";
+export { default as ChevronDown } from "./ChevronDown";
+export { default as ChevronRight } from "./ChevronRight";
+export { default as Close } from "./Close";
+export { default as Code } from "./Code";
+export { default as Edit } from "./Edit";
+export { default as FilePlus } from "./FilePlus";
+export { default as File } from "./File";
+export { default as FolderPlus } from "./FolderPlus";
+export { default as Folder } from "./Folder";
+export { default as GitFork } from "./GitFork";
+export { default as Notebook } from "./Notebook";
+export { default as Trash } from "./Trash";
+export { default as TriangleAlert } from "./TriangleAlert";

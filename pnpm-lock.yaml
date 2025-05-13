@@ -68,6 +68,9 @@ importers:
       d3:
         specifier: ^7.9.0
         version: 7.9.0
+      icons:
+        specifier: workspace:^
+        version: link:../../packages/icons
       lucide-react:
         specifier: ^0.475.0
         version: 0.475.0(react@19.1.0)

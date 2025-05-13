@@ -1,4 +1,4 @@
-import { File } from "lucide-react";
+import { File } from "icons";
 
 export default function EmptyFunctionNodeGraph() {
   return (

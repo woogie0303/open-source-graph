@@ -3,7 +3,7 @@ import { useRequestCreateFileTreeNode } from "@/hooks/queries/fileTreeNode/useRe
 import { useRequestDeleteFileTreeNode } from "@/hooks/queries/fileTreeNode/useRequestDeleteFileTreeNode";
 import { useRequestGetFileTreeNode } from "@/hooks/queries/fileTreeNode/useRequestGetFileTreeNode";
 import { useRequestUpdateFileTreeNodeName } from "@/hooks/queries/fileTreeNode/useRequestUpdateFileTreeNodeName";
-import { FilePlus, FolderPlus } from "lucide-react";
+import { FilePlus, FolderPlus } from "icons";
 import { useRef } from "react";
 import { Tree, TreeApi } from "react-arborist";
 import useResizeObserver from "use-resize-observer";

@@ -2,7 +2,7 @@
 
 import { useRequestDeleteFunctionNode } from "@/hooks/queries/functionNode/useRequestDeleteFunctionNode";
 import { useClickOutside } from "@/hooks/useClickOutside";
-import { Edit, Trash2 } from "lucide-react";
+import { Edit, Trash } from "icons";
 import { AnimatePresence, motion } from "motion/react";
 import { useRef, useState } from "react";
 import UpdateFunctionNodeDialog from "./UpdateFunctionNodeDialog";
@@ -82,7 +82,7 @@ export default function NodeContextMenu({
           onClick={handleDelete}
           className="w-full text-left px-4 py-3 text-sm flex items-center gap-2 hover:bg-red-50 text-red-600"
         >
-          <Trash2 className="h-4 w-4" />
+          <Trash className="h-4 w-4" />
           함수 삭제
         </button>
       </motion.div>

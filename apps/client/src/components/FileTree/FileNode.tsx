@@ -1,7 +1,7 @@
 import { ResponseFileTreeNode } from "@/apis/request/fileTree";
 import { useRouter } from "@/libs/router/hooks/useRouter";
 import cn from "@/utils/cn";
-import { Edit, File, Folder, X } from "lucide-react";
+import { Close, Edit, File, Folder } from "icons";
 import { JSX } from "react";
 import { NodeRendererProps } from "react-arborist";
 import { useParams } from "react-router";
@@ -59,7 +59,7 @@ function NodeActions({
         }}
         title="Delete"
       >
-        <X />
+        <Close />
       </button>
     </div>
   );
